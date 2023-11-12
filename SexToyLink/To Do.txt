@@ -1,0 +1,2 @@
+﻿Finish implementing SetStrengthDOL()
+Fix error cannot access dispozed object if toy control thread running and UI closes cuz user closes app

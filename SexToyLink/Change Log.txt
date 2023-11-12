@@ -1,0 +1,3 @@
+﻿1. Updated buttplug to latest version. Now requires initface Central
+2. Reworked code to support future improvements
+3. updated CEf Sharp (embeded browser) to latest version.
