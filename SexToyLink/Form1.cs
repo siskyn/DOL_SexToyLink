@@ -58,7 +58,7 @@ namespace SexToyLink
             if (debug) richTextBox1.BringToFront();
             CefSettings settings = new CefSettings();
             settings.LogSeverity = LogSeverity.Disable;
-            settings.PackLoadingDisabled = true;
+            //settings.PackLoadingDisabled = true;
             settings.CachePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\CEF";
             CefSharp.Cef.Initialize(settings);
             elapsedTime = new Stopwatch();
@@ -201,8 +201,6 @@ namespace SexToyLink
                 }
                 */
 
-                var testClientDevice = client.Devices[0];
-
 
 
                 
@@ -212,7 +210,7 @@ namespace SexToyLink
                     //Console.WriteLine($"- {device.Name}");
                     try
                     {//let the vibration.... begin.
-                        await testClientDevice.VibrateAsync(vibrationCurrentIntensity / 100f); //This version sets all of the motors on a vibrating device to the same speed.
+                        await device.VibrateAsync(vibrationCurrentIntensity / 100f); //This version sets all of the motors on a vibrating device to the same speed.
                     }
                     catch(ButtplugClientConnectorException e)
                     {

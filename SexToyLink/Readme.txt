@@ -22,34 +22,35 @@ Current functionality:
  Installation
 ------------
 1. Unpack the archive to any desired location. This will create a folder "Sex Toy Link"
-2. There is no step 2.
+2. Install https://intiface.com/central/
 
  Usage
 ------------
-1. Run SexToyLink.exe inside the "Sex Toy Link" folder.
-2. Click Scan
-3. Wait until your toy is detected, then click Control.
-4. (Optionallly) use the strength slider to directly control the toy.
-5. Go to "Degrees of Lewdity" Tab
-6. Clik "Open degrees of lewdity".
-7. Select the location of the DOL html file.
-8. Your toy will now react to DOL sex scenes.
+1. Run SexToyLink.exe and Intiface Central 
+2. Run Intiface server and add your devices to it. The super quick guide is, run the app, click the play button, go to Devices, click "Start Scanning" and turn on your devices. "For a more detailed guide see https://docs.intiface.com/docs/intiface-central/quickstart
+2. Go to Settings
+   2.1 Set the desired game source. either a downloaded copy of the game, or a web server (default is dolmods.net)
+   2.2 Set Port and Server address (if not sure, leave default, it will work with a default installation of Intiface Central on the same computer)
+   2.3 Set the Min and Max Strength, as well as the Cycle duration as desired.
+3. Hit "Connect"
+4. Go to Play
+5. Click "Launch DoL"
 
 
  FAQ
 ------------
 Q: Is my sex toy supported?
 A: To confirm that your sex toy will work check the following:
-    1. Go to https://iostindex.com/, search for your toy and confirm that in the "Buttplug.io Support" column it has "C#"
+    1. Go to https://iostindex.com/, search for your toy and confirm that it has a checkmark in the "Buttplug.io Support" column.
     2. Currently only vibration control is implemented in this app, so your toy must have vibration.
 
 Q: Can this app control more than one toy at once?
-A: The code was written to support multiple toys at the same time, but the author only has one toy, so this functionality is untested. Feedback is welcome.
+A: Yes. As many as you can get connected to intiface Central.
 
 Q: My sex toy doesn't work!
 A: To resolve this please do the following:
     1. Check that it's supported (check above)
-    2. Click scan. Wait until it appears in the list. Leave the checkbox checked. Click Control. Drag the slider to test.
+    2. Check if you can manually control it from Intiface Central
 
 Q: What is Degrees of Lewdity and where do I get it ?
 A: Degrees of Lewdity is an erotic game. You play an 18-year-old boy or girl in a town full of people with lewd intentions. 
@@ -63,6 +64,11 @@ A: You can resize the window by draging on corners, or simply maximize it by dou
 
  Changelog
 ------------
+V 1.0
+- Updated to use Intiface Central
+- Added ability to play from online location
+- Under the hood changes to allow easier updates in the future
+
 V 0.0.0.1
 Initial release.
 
