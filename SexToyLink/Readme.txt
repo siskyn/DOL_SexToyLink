@@ -44,6 +44,9 @@ A: To confirm that your sex toy will work check the following:
     1. Go to https://iostindex.com/, search for your toy and confirm that it has a checkmark in the "Buttplug.io Support" column.
     2. Currently only vibration control is implemented in this app, so your toy must have vibration.
 
+Q: What version of DoL will this work with?
+A: It will run any version of DoL including modded versions, and it looks for certain keywords during sex scenes. The game code isn't touched.
+
 Q: Can this app control more than one toy at once?
 A: Yes. As many as you can get connected to intiface Central.
 
@@ -68,6 +71,7 @@ V 1.0
 - Updated to use Intiface Central
 - Added ability to play from online location
 - Under the hood changes to allow easier updates in the future
+- Added ability to use multiple toys at once
 
 V 0.0.0.1
 Initial release.
