@@ -364,3 +364,6 @@ FodyWeavers.xsd
 
 # Exclude folders starting with "cef.redist" inside the packages folder
 **/[Pp]ackages/cef.redist*/
+
+#Publish folder
+Publish

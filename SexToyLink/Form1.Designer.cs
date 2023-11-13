@@ -32,13 +32,11 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage_Play = new System.Windows.Forms.TabPage();
-            this.button_disconnect = new System.Windows.Forms.Button();
-            this.button_Connect = new System.Windows.Forms.Button();
             this.Open_DOL_button = new System.Windows.Forms.Button();
             this.chromiumWebBrowser1 = new CefSharp.WinForms.ChromiumWebBrowser();
             this.tabPage_settings = new System.Windows.Forms.TabPage();
-            this.label11 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.label11 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.textBox_buttplug_port = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
@@ -50,7 +48,6 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.button_save_Settings = new System.Windows.Forms.Button();
-            this.label7 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.textBox_WebAddress = new System.Windows.Forms.TextBox();
@@ -62,10 +59,13 @@
             this.radioButton_Online = new System.Windows.Forms.RadioButton();
             this.label12 = new System.Windows.Forms.Label();
             this.radioButton_offline = new System.Windows.Forms.RadioButton();
+            this.button_disconnect = new System.Windows.Forms.Button();
+            this.button_Connect = new System.Windows.Forms.Button();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.timer_DOL_check = new System.Windows.Forms.Timer(this.components);
             this.timer_UI_update_wait = new System.Windows.Forms.Timer(this.components);
             this.timer_DOL_vibrate = new System.Windows.Forms.Timer(this.components);
+            this.button_game_reload = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage_Play.SuspendLayout();
             this.tabPage_settings.SuspendLayout();
@@ -83,51 +83,31 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(678, 370);
+            this.tabControl1.Size = new System.Drawing.Size(669, 306);
             this.tabControl1.TabIndex = 14;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
             // tabPage_Play
             // 
-            this.tabPage_Play.Controls.Add(this.button_disconnect);
-            this.tabPage_Play.Controls.Add(this.button_Connect);
             this.tabPage_Play.Controls.Add(this.Open_DOL_button);
             this.tabPage_Play.Controls.Add(this.chromiumWebBrowser1);
             this.tabPage_Play.Location = new System.Drawing.Point(4, 22);
             this.tabPage_Play.Name = "tabPage_Play";
             this.tabPage_Play.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage_Play.Size = new System.Drawing.Size(670, 344);
+            this.tabPage_Play.Size = new System.Drawing.Size(661, 280);
             this.tabPage_Play.TabIndex = 1;
             this.tabPage_Play.Text = "Play";
             this.tabPage_Play.UseVisualStyleBackColor = true;
             // 
-            // button_disconnect
-            // 
-            this.button_disconnect.Location = new System.Drawing.Point(3, 61);
-            this.button_disconnect.Name = "button_disconnect";
-            this.button_disconnect.Size = new System.Drawing.Size(394, 58);
-            this.button_disconnect.TabIndex = 5;
-            this.button_disconnect.Text = "Disconnect";
-            this.button_disconnect.UseVisualStyleBackColor = true;
-            this.button_disconnect.Click += new System.EventHandler(this.button_disconnect_Click);
-            // 
-            // button_Connect
-            // 
-            this.button_Connect.Location = new System.Drawing.Point(257, 18);
-            this.button_Connect.Name = "button_Connect";
-            this.button_Connect.Size = new System.Drawing.Size(282, 23);
-            this.button_Connect.TabIndex = 4;
-            this.button_Connect.Text = "Connect";
-            this.button_Connect.UseVisualStyleBackColor = true;
-            this.button_Connect.Click += new System.EventHandler(this.button_Connect_Click);
-            // 
             // Open_DOL_button
             // 
-            this.Open_DOL_button.Location = new System.Drawing.Point(-4, 125);
+            this.Open_DOL_button.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Open_DOL_button.Font = new System.Drawing.Font("Monotype Corsiva", 36F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Open_DOL_button.Location = new System.Drawing.Point(3, 3);
             this.Open_DOL_button.Name = "Open_DOL_button";
-            this.Open_DOL_button.Size = new System.Drawing.Size(394, 58);
+            this.Open_DOL_button.Size = new System.Drawing.Size(655, 274);
             this.Open_DOL_button.TabIndex = 1;
-            this.Open_DOL_button.Text = "Open Degrees of Lewdity";
+            this.Open_DOL_button.Text = "Launch DoL";
             this.Open_DOL_button.UseVisualStyleBackColor = true;
             this.Open_DOL_button.Click += new System.EventHandler(this.button_Play_Click);
             // 
@@ -137,35 +117,27 @@
             this.chromiumWebBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.chromiumWebBrowser1.Location = new System.Drawing.Point(3, 3);
             this.chromiumWebBrowser1.Name = "chromiumWebBrowser1";
-            this.chromiumWebBrowser1.Size = new System.Drawing.Size(664, 338);
+            this.chromiumWebBrowser1.Size = new System.Drawing.Size(655, 274);
             this.chromiumWebBrowser1.TabIndex = 3;
+            this.chromiumWebBrowser1.FrameLoadEnd += new System.EventHandler<CefSharp.FrameLoadEndEventArgs>(this.chromiumWebBrowser1_FrameLoadEnd);
             // 
             // tabPage_settings
             // 
-            this.tabPage_settings.Controls.Add(this.label11);
             this.tabPage_settings.Controls.Add(this.panel2);
             this.tabPage_settings.Controls.Add(this.button_save_Settings);
-            this.tabPage_settings.Controls.Add(this.label7);
             this.tabPage_settings.Controls.Add(this.panel1);
             this.tabPage_settings.Location = new System.Drawing.Point(4, 22);
             this.tabPage_settings.Name = "tabPage_settings";
-            this.tabPage_settings.Size = new System.Drawing.Size(670, 344);
+            this.tabPage_settings.Size = new System.Drawing.Size(661, 280);
             this.tabPage_settings.TabIndex = 2;
             this.tabPage_settings.Text = "Settings";
             this.tabPage_settings.UseVisualStyleBackColor = true;
             // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(461, 7);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(133, 13);
-            this.label11.TabIndex = 10;
-            this.label11.Text = "Buttplug / Intiface Settings";
-            // 
             // panel2
             // 
+            this.panel2.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.label11);
             this.panel2.Controls.Add(this.label8);
             this.panel2.Controls.Add(this.textBox_buttplug_port);
             this.panel2.Controls.Add(this.label10);
@@ -181,10 +153,19 @@
             this.panel2.Size = new System.Drawing.Size(250, 218);
             this.panel2.TabIndex = 9;
             // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(70, 9);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(133, 13);
+            this.label11.TabIndex = 10;
+            this.label11.Text = "Buttplug / Intiface Settings";
+            // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(70, 12);
+            this.label8.Location = new System.Drawing.Point(82, 32);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(29, 13);
             this.label8.TabIndex = 1;
@@ -192,7 +173,7 @@
             // 
             // textBox_buttplug_port
             // 
-            this.textBox_buttplug_port.Location = new System.Drawing.Point(105, 9);
+            this.textBox_buttplug_port.Location = new System.Drawing.Point(117, 29);
             this.textBox_buttplug_port.Name = "textBox_buttplug_port";
             this.textBox_buttplug_port.Size = new System.Drawing.Size(100, 20);
             this.textBox_buttplug_port.TabIndex = 0;
@@ -201,7 +182,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(18, 42);
+            this.label10.Location = new System.Drawing.Point(30, 62);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(81, 13);
             this.label10.TabIndex = 2;
@@ -209,7 +190,7 @@
             // 
             // textBox_buttplug_IP
             // 
-            this.textBox_buttplug_IP.Location = new System.Drawing.Point(105, 39);
+            this.textBox_buttplug_IP.Location = new System.Drawing.Point(117, 59);
             this.textBox_buttplug_IP.Name = "textBox_buttplug_IP";
             this.textBox_buttplug_IP.Size = new System.Drawing.Size(100, 20);
             this.textBox_buttplug_IP.TabIndex = 3;
@@ -218,7 +199,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(31, 76);
+            this.label4.Location = new System.Drawing.Point(43, 96);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(68, 13);
             this.label4.TabIndex = 1;
@@ -226,7 +207,7 @@
             // 
             // textBox_DOL_cycle
             // 
-            this.textBox_DOL_cycle.Location = new System.Drawing.Point(105, 133);
+            this.textBox_DOL_cycle.Location = new System.Drawing.Point(117, 153);
             this.textBox_DOL_cycle.Name = "textBox_DOL_cycle";
             this.textBox_DOL_cycle.Size = new System.Drawing.Size(100, 20);
             this.textBox_DOL_cycle.TabIndex = 5;
@@ -234,7 +215,7 @@
             // 
             // textBox_DOL_max_str
             // 
-            this.textBox_DOL_max_str.Location = new System.Drawing.Point(105, 103);
+            this.textBox_DOL_max_str.Location = new System.Drawing.Point(117, 123);
             this.textBox_DOL_max_str.Name = "textBox_DOL_max_str";
             this.textBox_DOL_max_str.Size = new System.Drawing.Size(100, 20);
             this.textBox_DOL_max_str.TabIndex = 3;
@@ -242,7 +223,7 @@
             // 
             // textBox_DOL_min_str
             // 
-            this.textBox_DOL_min_str.Location = new System.Drawing.Point(105, 73);
+            this.textBox_DOL_min_str.Location = new System.Drawing.Point(117, 93);
             this.textBox_DOL_min_str.Name = "textBox_DOL_min_str";
             this.textBox_DOL_min_str.Size = new System.Drawing.Size(100, 20);
             this.textBox_DOL_min_str.TabIndex = 0;
@@ -251,7 +232,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(31, 106);
+            this.label5.Location = new System.Drawing.Point(43, 126);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(71, 13);
             this.label5.TabIndex = 2;
@@ -260,7 +241,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(3, 136);
+            this.label6.Location = new System.Drawing.Point(15, 156);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(99, 13);
             this.label6.TabIndex = 4;
@@ -268,25 +249,18 @@
             // 
             // button_save_Settings
             // 
-            this.button_save_Settings.Location = new System.Drawing.Point(8, 247);
+            this.button_save_Settings.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.button_save_Settings.Location = new System.Drawing.Point(0, 249);
             this.button_save_Settings.Name = "button_save_Settings";
-            this.button_save_Settings.Size = new System.Drawing.Size(650, 50);
+            this.button_save_Settings.Size = new System.Drawing.Size(661, 31);
             this.button_save_Settings.TabIndex = 8;
             this.button_save_Settings.Text = "Save Settings";
             this.button_save_Settings.UseVisualStyleBackColor = true;
             this.button_save_Settings.Click += new System.EventHandler(this.button_save_Settings_Click);
             // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(95, 7);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(70, 13);
-            this.label7.TabIndex = 7;
-            this.label7.Text = "DOL Settings";
-            // 
             // panel1
             // 
+            this.panel1.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Controls.Add(this.panel4);
             this.panel1.Controls.Add(this.panel3);
@@ -295,7 +269,7 @@
             this.panel1.Controls.Add(this.radioButton_offline);
             this.panel1.Location = new System.Drawing.Point(8, 23);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(382, 218);
+            this.panel1.Size = new System.Drawing.Size(386, 218);
             this.panel1.TabIndex = 6;
             // 
             // panel4
@@ -313,6 +287,7 @@
             this.textBox_WebAddress.Name = "textBox_WebAddress";
             this.textBox_WebAddress.Size = new System.Drawing.Size(151, 20);
             this.textBox_WebAddress.TabIndex = 13;
+            this.textBox_WebAddress.TextChanged += new System.EventHandler(this.textBox_WebAddress_TextChanged);
             // 
             // label2
             // 
@@ -349,6 +324,7 @@
             this.textBox_Filepath.Name = "textBox_Filepath";
             this.textBox_Filepath.Size = new System.Drawing.Size(151, 20);
             this.textBox_Filepath.TabIndex = 6;
+            this.textBox_Filepath.TextChanged += new System.EventHandler(this.textBox_Filepath_TextChanged);
             // 
             // label1
             // 
@@ -374,7 +350,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(102, 9);
+            this.label12.Location = new System.Drawing.Point(144, 9);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(73, 13);
             this.label12.TabIndex = 11;
@@ -392,6 +368,26 @@
             this.radioButton_offline.UseVisualStyleBackColor = true;
             this.radioButton_offline.CheckedChanged += new System.EventHandler(this.radioButton_offline_CheckedChanged);
             // 
+            // button_disconnect
+            // 
+            this.button_disconnect.Location = new System.Drawing.Point(233, 0);
+            this.button_disconnect.Name = "button_disconnect";
+            this.button_disconnect.Size = new System.Drawing.Size(127, 21);
+            this.button_disconnect.TabIndex = 5;
+            this.button_disconnect.Text = "Disconnect";
+            this.button_disconnect.UseVisualStyleBackColor = true;
+            this.button_disconnect.Click += new System.EventHandler(this.button_disconnect_Click);
+            // 
+            // button_Connect
+            // 
+            this.button_Connect.Location = new System.Drawing.Point(103, 0);
+            this.button_Connect.Name = "button_Connect";
+            this.button_Connect.Size = new System.Drawing.Size(127, 21);
+            this.button_Connect.TabIndex = 4;
+            this.button_Connect.Text = "Connect";
+            this.button_Connect.UseVisualStyleBackColor = true;
+            this.button_Connect.Click += new System.EventHandler(this.button_Connect_Click);
+            // 
             // richTextBox1
             // 
             this.richTextBox1.Location = new System.Drawing.Point(12, 188);
@@ -405,7 +401,7 @@
             // 
             // timer_DOL_check
             // 
-            this.timer_DOL_check.Interval = 50;
+            this.timer_DOL_check.Interval = 200;
             this.timer_DOL_check.Tick += new System.EventHandler(this.timer_DOL_Tick);
             // 
             // timer_UI_update_wait
@@ -417,23 +413,36 @@
             // 
             this.timer_DOL_vibrate.Tick += new System.EventHandler(this.timer_DOL_vibrate_Tick);
             // 
+            // button_game_reload
+            // 
+            this.button_game_reload.Location = new System.Drawing.Point(363, 0);
+            this.button_game_reload.Name = "button_game_reload";
+            this.button_game_reload.Size = new System.Drawing.Size(127, 21);
+            this.button_game_reload.TabIndex = 15;
+            this.button_game_reload.Text = "Reload  game";
+            this.button_game_reload.UseVisualStyleBackColor = true;
+            this.button_game_reload.Visible = false;
+            this.button_game_reload.Click += new System.EventHandler(this.button_game_reload_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(678, 370);
+            this.ClientSize = new System.Drawing.Size(669, 306);
+            this.Controls.Add(this.button_game_reload);
+            this.Controls.Add(this.button_Connect);
+            this.Controls.Add(this.button_disconnect);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.richTextBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(299, 398);
+            this.MinimumSize = new System.Drawing.Size(685, 345);
             this.Name = "Form1";
-            this.Text = "Sex Toy Link (disconnected)";
+            this.Text = "Sex Toy Link: Disconnected";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage_Play.ResumeLayout(false);
             this.tabPage_settings.ResumeLayout(false);
-            this.tabPage_settings.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.panel1.ResumeLayout(false);
@@ -449,40 +458,40 @@
         #endregion
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage_Play;
-        private System.Windows.Forms.Button Open_DOL_button;
+        public System.Windows.Forms.Button Open_DOL_button;
         private CefSharp.WinForms.ChromiumWebBrowser chromiumWebBrowser1;
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.Timer timer_DOL_check;
-        private System.Windows.Forms.Timer timer_UI_update_wait;
+        public System.Windows.Forms.Timer timer_UI_update_wait;
         private System.Windows.Forms.TabPage tabPage_settings;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.TextBox textBox_DOL_cycle;
+        public System.Windows.Forms.TextBox textBox_DOL_cycle;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox textBox_DOL_max_str;
+        public System.Windows.Forms.TextBox textBox_DOL_max_str;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox textBox_DOL_min_str;
-        private System.Windows.Forms.Label label7;
+        public System.Windows.Forms.TextBox textBox_DOL_min_str;
         private System.Windows.Forms.Button button_save_Settings;
         private System.Windows.Forms.Timer timer_DOL_vibrate;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox textBox_buttplug_port;
+        public System.Windows.Forms.TextBox textBox_buttplug_port;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.TextBox textBox_buttplug_IP;
-        private System.Windows.Forms.RadioButton radioButton_Online;
+        public System.Windows.Forms.TextBox textBox_buttplug_IP;
+        public System.Windows.Forms.RadioButton radioButton_Online;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.RadioButton radioButton_offline;
+        public System.Windows.Forms.RadioButton radioButton_offline;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.TextBox textBox_WebAddress;
+        public System.Windows.Forms.TextBox textBox_WebAddress;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button button_Browse;
-        private System.Windows.Forms.TextBox textBox_Filepath;
+        public System.Windows.Forms.TextBox textBox_Filepath;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button_disconnect;
         private System.Windows.Forms.Button button_Connect;
+        public System.Windows.Forms.Button button_game_reload;
     }
 }
 

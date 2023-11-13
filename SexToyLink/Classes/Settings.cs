@@ -7,13 +7,14 @@ using System.Threading.Tasks;
 namespace SexToyLink.Classes
 {
     [Serializable]
-    class Settings
+    public class Settings
     {
         private int DOL_vibration_min;
         private int DOL_vibration_max;
         private int DOL_vibration_cycle;
-        private bool remember_DOL_path;
-        private string DOL_path;
+        private string gameSource;
+        private string DOL_path_online;
+        private string DOL_path_offline;
         private string port;
         private string IP;
 
@@ -21,13 +22,42 @@ namespace SexToyLink.Classes
         {
             DOL_vibration_min = 0;
             DOL_vibration_max = 100;
-            DOL_vibration_cycle = 700;
-            //remember_DOL_path = true;
-            DOL_path = "";
+            DOL_vibration_cycle = 200;
+            gameSource = "online";
+            DOL_path_online = "https://dolmods.net/";
+            DOL_path_offline = "";
             port = "12345";
             IP = "localhost";
         }
+        public void Set_GameSource(string newSource)
+        {
+            gameSource = newSource;
+        }
 
+        public string Get_GameSource()
+        {
+            return gameSource;
+        }
+
+        public void Set_DOL_path_online(string newPath)
+        {
+            DOL_path_online = newPath;
+        }
+
+        public string Get_DOL_path_online()
+        {
+            return DOL_path_online;
+        }
+
+        public void Set_DOL_path_offline(string newPath)
+        {
+            DOL_path_offline = newPath;
+        }
+
+        public string Get_DOL_path_offline()
+        {
+            return DOL_path_offline;
+        }
 
         public void Set_IP(string newIP)
         {
@@ -47,26 +77,6 @@ namespace SexToyLink.Classes
         public string Get_Port()
         {
             return port;
-        }
-
-        public void Set_DOL_path(string path)
-        {
-            DOL_path = path;
-        }
-
-        public string Get_DOL_path()
-        {
-            return DOL_path;
-        }
-
-        public void Set_remember_DOL_path( bool value)
-        {
-            remember_DOL_path = value;
-        }
-
-        public bool Get_remember_DOL_path()
-        {
-            return remember_DOL_path;
         }
 
 
