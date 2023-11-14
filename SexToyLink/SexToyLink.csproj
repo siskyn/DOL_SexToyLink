@@ -122,16 +122,16 @@
   <ItemGroup>
     <Compile Include="Classes\Controller.cs" />
     <Compile Include="Classes\Settings.cs" />
-    <Compile Include="Form1.cs">
+    <Compile Include="Form_UI.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Form_UI.Designer.cs">
+      <DependentUpon>Form_UI.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="Form_UI.resx">
+      <DependentUpon>Form_UI.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

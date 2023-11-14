@@ -1,6 +1,6 @@
 ﻿namespace SexToyLink
 {
-    partial class Form1
+    partial class Form_UI
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_UI));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage_Play = new System.Windows.Forms.TabPage();
             this.Open_DOL_button = new System.Windows.Forms.Button();
@@ -177,7 +177,6 @@
             this.textBox_buttplug_port.Name = "textBox_buttplug_port";
             this.textBox_buttplug_port.Size = new System.Drawing.Size(100, 20);
             this.textBox_buttplug_port.TabIndex = 0;
-            this.textBox_buttplug_port.TextChanged += new System.EventHandler(this.textBox_buttplug_port_TextChanged);
             // 
             // label10
             // 
@@ -194,7 +193,6 @@
             this.textBox_buttplug_IP.Name = "textBox_buttplug_IP";
             this.textBox_buttplug_IP.Size = new System.Drawing.Size(100, 20);
             this.textBox_buttplug_IP.TabIndex = 3;
-            this.textBox_buttplug_IP.TextChanged += new System.EventHandler(this.textBox_buttplug_IP_TextChanged);
             // 
             // label4
             // 
@@ -211,7 +209,6 @@
             this.textBox_DOL_cycle.Name = "textBox_DOL_cycle";
             this.textBox_DOL_cycle.Size = new System.Drawing.Size(100, 20);
             this.textBox_DOL_cycle.TabIndex = 5;
-            this.textBox_DOL_cycle.TextChanged += new System.EventHandler(this.textBox_DOL_cycle_TextChanged);
             // 
             // textBox_DOL_max_str
             // 
@@ -219,7 +216,6 @@
             this.textBox_DOL_max_str.Name = "textBox_DOL_max_str";
             this.textBox_DOL_max_str.Size = new System.Drawing.Size(100, 20);
             this.textBox_DOL_max_str.TabIndex = 3;
-            this.textBox_DOL_max_str.TextChanged += new System.EventHandler(this.textBox_DOL_max_str_TextChanged);
             // 
             // textBox_DOL_min_str
             // 
@@ -227,7 +223,6 @@
             this.textBox_DOL_min_str.Name = "textBox_DOL_min_str";
             this.textBox_DOL_min_str.Size = new System.Drawing.Size(100, 20);
             this.textBox_DOL_min_str.TabIndex = 0;
-            this.textBox_DOL_min_str.TextChanged += new System.EventHandler(this.textBox_DOL_min_str_TextChanged);
             // 
             // label5
             // 
@@ -287,7 +282,6 @@
             this.textBox_WebAddress.Name = "textBox_WebAddress";
             this.textBox_WebAddress.Size = new System.Drawing.Size(151, 20);
             this.textBox_WebAddress.TabIndex = 13;
-            this.textBox_WebAddress.TextChanged += new System.EventHandler(this.textBox_WebAddress_TextChanged);
             // 
             // label2
             // 
@@ -324,7 +318,6 @@
             this.textBox_Filepath.Name = "textBox_Filepath";
             this.textBox_Filepath.Size = new System.Drawing.Size(151, 20);
             this.textBox_Filepath.TabIndex = 6;
-            this.textBox_Filepath.TextChanged += new System.EventHandler(this.textBox_Filepath_TextChanged);
             // 
             // label1
             // 
@@ -424,7 +417,7 @@
             this.button_game_reload.Visible = false;
             this.button_game_reload.Click += new System.EventHandler(this.button_game_reload_Click);
             // 
-            // Form1
+            // Form_UI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -436,7 +429,7 @@
             this.Controls.Add(this.richTextBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(685, 345);
-            this.Name = "Form1";
+            this.Name = "Form_UI";
             this.Text = "Sex Toy Link: Disconnected";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -459,9 +452,9 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage_Play;
         public System.Windows.Forms.Button Open_DOL_button;
-        private CefSharp.WinForms.ChromiumWebBrowser chromiumWebBrowser1;
+        public CefSharp.WinForms.ChromiumWebBrowser chromiumWebBrowser1;
         private System.Windows.Forms.RichTextBox richTextBox1;
-        private System.Windows.Forms.Timer timer_DOL_check;
+        public System.Windows.Forms.Timer timer_DOL_check;
         public System.Windows.Forms.Timer timer_UI_update_wait;
         private System.Windows.Forms.TabPage tabPage_settings;
         private System.Windows.Forms.Panel panel1;
@@ -472,7 +465,7 @@
         private System.Windows.Forms.Label label4;
         public System.Windows.Forms.TextBox textBox_DOL_min_str;
         private System.Windows.Forms.Button button_save_Settings;
-        private System.Windows.Forms.Timer timer_DOL_vibrate;
+        public System.Windows.Forms.Timer timer_DOL_vibrate;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label8;
