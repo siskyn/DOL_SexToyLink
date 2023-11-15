@@ -1,6 +1,6 @@
 ﻿namespace SexToyLink
 {
-    partial class Form_UI
+    partial class Form_Main
     {
         /// <summary>
         /// Required designer variable.
@@ -29,13 +29,14 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_UI));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_Main));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage_Play = new System.Windows.Forms.TabPage();
             this.Open_DOL_button = new System.Windows.Forms.Button();
             this.chromiumWebBrowser1 = new CefSharp.WinForms.ChromiumWebBrowser();
             this.tabPage_settings = new System.Windows.Forms.TabPage();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.button_Devices_Details = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.textBox_buttplug_port = new System.Windows.Forms.TextBox();
@@ -101,7 +102,6 @@
             // 
             // Open_DOL_button
             // 
-            this.Open_DOL_button.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Open_DOL_button.Font = new System.Drawing.Font("Monotype Corsiva", 36F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Open_DOL_button.Location = new System.Drawing.Point(3, 3);
             this.Open_DOL_button.Name = "Open_DOL_button";
@@ -137,6 +137,7 @@
             // 
             this.panel2.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.button_Devices_Details);
             this.panel2.Controls.Add(this.label11);
             this.panel2.Controls.Add(this.label8);
             this.panel2.Controls.Add(this.textBox_buttplug_port);
@@ -152,6 +153,16 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(250, 218);
             this.panel2.TabIndex = 9;
+            // 
+            // button_Devices_Details
+            // 
+            this.button_Devices_Details.Location = new System.Drawing.Point(66, 186);
+            this.button_Devices_Details.Name = "button_Devices_Details";
+            this.button_Devices_Details.Size = new System.Drawing.Size(130, 23);
+            this.button_Devices_Details.TabIndex = 11;
+            this.button_Devices_Details.Text = "Devices Details";
+            this.button_Devices_Details.UseVisualStyleBackColor = true;
+            this.button_Devices_Details.Click += new System.EventHandler(this.button_Devices_Details_Click);
             // 
             // label11
             // 
@@ -417,7 +428,7 @@
             this.button_game_reload.Visible = false;
             this.button_game_reload.Click += new System.EventHandler(this.button_game_reload_Click);
             // 
-            // Form_UI
+            // Form_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -429,7 +440,8 @@
             this.Controls.Add(this.richTextBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(685, 345);
-            this.Name = "Form_UI";
+            this.Name = "Form_Main";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Sex Toy Link: Disconnected";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -485,6 +497,7 @@
         private System.Windows.Forms.Button button_disconnect;
         private System.Windows.Forms.Button button_Connect;
         public System.Windows.Forms.Button button_game_reload;
+        private System.Windows.Forms.Button button_Devices_Details;
     }
 }
 

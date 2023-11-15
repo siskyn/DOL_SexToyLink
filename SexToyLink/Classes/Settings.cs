@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Buttplug.Client;
 
 namespace SexToyLink.Classes
 {
@@ -17,6 +18,7 @@ namespace SexToyLink.Classes
         private string DOL_path_offline;
         private string port;
         private string IP;
+        public List<MemorizedDevice> memorizedDevicesList;
 
         public Settings()
         {
@@ -28,6 +30,7 @@ namespace SexToyLink.Classes
             DOL_path_offline = "";
             port = "12345";
             IP = "localhost";
+            memorizedDevicesList = new List<MemorizedDevice>();
         }
         public void Set_GameSource(string newSource)
         {

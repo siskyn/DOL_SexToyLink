@@ -3,13 +3,20 @@ using Buttplug.Client.Connectors.WebsocketConnector;
 using Buttplug.Core;
 using CefSharp;
 using CefSharp.WinForms;
+using SexToyLink.Forms;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Reflection.Emit;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -24,14 +31,15 @@ namespace SexToyLink.Classes
         volatile bool CombatDetected = false;
         private TaskCompletionSource<bool> stopScanClickWaitTask;
         delegate void SetTextCallback(string text);
-        delegate void SetStatusCallback(Form_UI myForm, string text);
+        delegate void SetStatusCallback(Form_Main myForm, string text);
         ButtplugWebsocketConnector myConnector;
         public ButtplugClient client = new ButtplugClient("SexToyLink Client");
-        List<ButtplugClientDevice> devicesOral = new List<ButtplugClientDevice>();
-        List<ButtplugClientDevice> devicesVaginal = new List<ButtplugClientDevice>();
-        List<ButtplugClientDevice> devicesAnal = new List<ButtplugClientDevice>();
-        List<ButtplugClientDevice> devicesGenericTemp = new List<ButtplugClientDevice>();
-        List<uint> options = new List<uint>();
+        public List<ButtplugClientDevice> devicesOral = new List<ButtplugClientDevice>();
+        public List<ButtplugClientDevice> devicesGenital = new List<ButtplugClientDevice>();
+        public List<ButtplugClientDevice> devicesAnal = new List<ButtplugClientDevice>();
+        public List<ButtplugClientDevice> devicesBreasts = new List<ButtplugClientDevice>();
+        public List<ButtplugClientDevice> devicesUncategorized = new List<ButtplugClientDevice>();
+        public List<ButtplugClientDevice> devicesAll = new List<ButtplugClientDevice>();
         public volatile bool controlActive = false;
         public volatile int selectedTab = 0;
         public volatile bool loadingSettingsFromFile = true;
@@ -43,6 +51,8 @@ namespace SexToyLink.Classes
         public volatile bool playingDOL = false;
         public volatile float vibrationCurrentIntensity = 0;
         public volatile bool haveAnyDevice = false;
+        bool oralAction, breastAction, genitalAction, analAction;
+        List<string> oralTriggers, breastTriggers, genitalTriggers, analTriggers;
 
         public  Settings mySettings = new Settings();
         string settingsPath = Application.StartupPath +"\\settings";
@@ -58,7 +68,7 @@ namespace SexToyLink.Classes
             elapsedTime = new Stopwatch();
             totalElapsedTime = new TimeSpan(0, 0, 0);
             totalElapsedTimeReverse = new TimeSpan(0, 0, 0);
-
+            LoadTriggers();
             try
             {
                 LoadSettingsFromFile();                
@@ -66,7 +76,117 @@ namespace SexToyLink.Classes
             catch{ }
         }
 
-        public void timer_UI_update_wait_Tick(Form_UI myForm)
+        void LoadTriggers()
+        {
+            oralTriggers = new List<string>();
+            breastTriggers = new List<string>();
+            genitalTriggers = new List<string>();
+            analTriggers = new List<string>();
+
+            //regex patterns can be used
+            //   (?:\s+\S+){0,3}\s+  -> match up to 3 words
+            //   \b\w +\b            -> match 1 word
+
+
+            oralTriggers.Add("down your throat");
+            oralTriggers.Add("presses your lips together in a kiss");
+            oralTriggers.Add("continues to push your mouth against");
+            oralTriggers.Add("pushes your mouth against");
+            oralTriggers.Add("struggles to keep your mouth latched to");
+            oralTriggers.Add("breaths are quick and heavy, jostling your head against");            
+            //oralTriggers.Add("");
+
+
+
+            breastTriggers.Add("kisses and caresses your");
+            breastTriggers.Add("tongue against your");
+            breastTriggers.Add("fingers lingering around your");
+            //breastTriggers.Add("");
+            
+                
+                
+
+
+
+            genitalTriggers.Add("your labia with the \\b\\w +\\b in (?:\\s+\\S+){0,3}\\s+ hand");
+            genitalTriggers.Add("plunges (?:\\s+\\S+){0,3}\\s+ into your warm");
+            genitalTriggers.Add("your labia.");
+            genitalTriggers.Add("gives your clitoris a tweak.");
+            genitalTriggers.Add("rubs the base of your << penisSimple >> while toying with your pussy");
+            genitalTriggers.Add("plunges a finger into your warm");
+            genitalTriggers.Add("your shaft.");
+            genitalTriggers.Add("rubs your glans.");
+            genitalTriggers.Add("fingers around your penis.");
+            genitalTriggers.Add("the inside of your");
+            genitalTriggers.Add(" the length of your");
+            genitalTriggers.Add("hand inside of your");
+            genitalTriggers.Add("the \\b\\w +\\b in \\b\\w +\\b \\b\\w +\\b hand against your");
+            genitalTriggers.Add("your \\b\\w +\\b with the \\b\\w +\\b in \\b\\w +\\b \\b\\w +\\b hand.");
+            genitalTriggers.Add("hand onto your penis.");
+            genitalTriggers.Add("teases your glans with the");
+            genitalTriggers.Add("With increasing power, \\b\\w +\\b fucks your");
+            genitalTriggers.Add("while toying with your pussy");
+            genitalTriggers.Add("your labia with the");
+            genitalTriggers.Add("your penis with the");
+            genitalTriggers.Add("against your \\b\\w +\\b penis");
+            
+            //genitalTriggers.Add("");
+
+
+
+
+
+            analTriggers.Add("teases your anus with your");
+            analTriggers.Add("slaps your ass and");
+            analTriggers.Add("your anus.");
+            analTriggers.Add("into your ass.");
+            analTriggers.Add("in and out of your ass");
+            //analTriggers.Add("");
+
+            
+                 
+                 
+                 
+                 
+                
+                 
+        }
+
+        public void UpdateDeviceCategories(List<string> oral, List<string> breast, List<string>genital, List<string> anal)
+        {
+            mySettings.memorizedDevicesList.Clear();
+            devicesOral.Clear();
+            devicesBreasts.Clear();
+            devicesGenital.Clear();
+            devicesAnal.Clear();
+            updateSingleDeviceCategory(oral, devicesOral, "oral");
+            updateSingleDeviceCategory(breast, devicesBreasts, "breasts");
+            updateSingleDeviceCategory(genital, devicesGenital, "genital");
+            updateSingleDeviceCategory(anal, devicesAnal, "anal");
+            oralAction = oralAction;
+            oralAction = oralAction;
+
+        }
+
+        void updateSingleDeviceCategory(List<string> deviceIDs, List<ButtplugClientDevice> devicesList, string bodyPart)
+        {
+            bool found;
+            bool toBreak = false;
+            foreach (string deviceID in deviceIDs)
+            {
+                foreach (var device in devicesAll)
+                {
+                    if (deviceID == device.Index.ToString())// should check device.DisplayName but using index for now due to buttplug IO bug where it remains null
+                    {
+                        devicesList.Add(device);
+                        mySettings.memorizedDevicesList.Add(new MemorizedDevice(deviceID, bodyPart));
+                        break;
+                    }
+                }
+            }
+        }
+
+        public void timer_UI_update_wait_Tick(Form_Main myForm)
         {
             switch (UI_update_action)
             {
@@ -91,7 +211,7 @@ namespace SexToyLink.Classes
             myForm.timer_UI_update_wait.Stop();
         }
 
-        public async void browser_page_loaded(Form_UI myForm)
+        public async void browser_page_loaded(Form_Main myForm)
         {
             //check if we're laoding from dolmods, and if yes, load the target of the iframe rather than the original page as a workaround to the iframe of death (can't read inside it)
             //MessageBox.Show("loaded");
@@ -111,13 +231,13 @@ namespace SexToyLink.Classes
             });
         }
 
-        public void Disconnect(Form_UI myForm)
+        public void Disconnect(Form_Main myForm)
         {
             client.DisconnectAsync();
             SetStatus(myForm, "Disconnected");
         }
 
-        public void button_Browse_Click(Form_UI myForm)
+        public void button_Browse_Click(Form_Main myForm)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "HTML Files (*.html)|*.html|All Files (*.*)|*.*";
@@ -147,7 +267,7 @@ namespace SexToyLink.Classes
             client.DisconnectAsync();
         }
 
-        async void CheckDOLState(Form_UI myForm)
+        async void CheckDOLState(Form_Main myForm)
         {
             if (myForm.InvokeRequired)
             {
@@ -157,7 +277,10 @@ namespace SexToyLink.Classes
                 });
             }
             else
-            {//now to do the actual checking.
+            {
+                /*
+                 * ==========functional old way of checking if in combat only
+                //now to do the actual checking.
                 CombatDetected = false;
                 string script;
 
@@ -175,15 +298,65 @@ namespace SexToyLink.Classes
                 });
                 //skip trying to check inside Iframe because so far we can't so instead we use a workaround where if loading from dolmods, we load the iframe directly, so the search above will detecte it.
                 
-
+                
                 if (CombatDetected == false && playingDOL == true)
                 {
                     combat_NOT_Detected(myForm);
                 }
+                */
+
+                oralAction = false;
+                breastAction = false;
+                genitalAction = false;
+                analAction = false;
+                if (await CheckTriggerSet(myForm, oralTriggers) == true)
+                {//we have oral action
+                    oralAction = true;
+                }
+                if (await CheckTriggerSet(myForm, breastTriggers) == true)
+                {//we have breast action
+                    breastAction = true;
+                }
+                if (await CheckTriggerSet(myForm, genitalTriggers) == true)
+                {//we have genital action
+                    genitalAction = true;
+                }
+                if (await CheckTriggerSet(myForm, analTriggers) == true)
+                {//we have anal action
+                    analAction = true;
+                }
+
+                if (oralAction || breastAction || genitalAction || analAction)
+                {
+                    combat_Detected(myForm);
+                }
+                else
+                {
+                    combat_NOT_Detected(myForm);
+                }
+
             }
         }
 
-        public void Timer_DOL_Tick_Update(Form_UI myForm)
+        async Task<bool> CheckTriggerSet(Form_Main myForm, List<string> myTriggers)
+        {
+            //string script = $"var triggers = {Newtonsoft.Json.JsonConvert.SerializeObject(myTriggers)}; triggers.some(trigger => document.body.innerText.includes(trigger));";
+
+
+            var jsRegexPatterns = myTriggers.Select(trigger => $"/{Regex.Escape(trigger)}/").ToList();
+            string script = $"var triggers = {Newtonsoft.Json.JsonConvert.SerializeObject(jsRegexPatterns)}; triggers.some(regex => regex.test(document.body.innerText));";
+
+            var result = await myForm.chromiumWebBrowser1.EvaluateScriptAsync(script);
+
+
+            if (result.Success && result.Result is bool triggerFound && triggerFound)
+            {//trigger found
+                    return true;
+            };
+            return false;
+        }
+
+        public void Timer_DOL_Tick_Update(Form_Main myForm)
         {
             if (selectedTab == 0)
             {
@@ -202,7 +375,7 @@ namespace SexToyLink.Classes
             }
         }
 
-        void combat_Detected(Form_UI myForm)
+        void combat_Detected(Form_Main myForm)
         {
             if (myForm.InvokeRequired)
             {
@@ -217,7 +390,7 @@ namespace SexToyLink.Classes
             }
         }
 
-        void combat_NOT_Detected(Form_UI myForm)
+        void combat_NOT_Detected(Form_Main myForm)
         {
             if (myForm.InvokeRequired)
             {
@@ -234,13 +407,13 @@ namespace SexToyLink.Classes
             }
         }
 
-        void SetStrength(Form_UI myForm,  float newValue)
+        void SetStrength(Form_Main myForm,  float newValue)
         {
             vibrationCurrentIntensity = newValue;
             UpdateVibration(myForm);
         }
 
-        public void button_Save_Click(Form_UI myForm)
+        public void button_Save_Click(Form_Main myForm)
         {
             if (SaveSettings(myForm) == true)
             {
@@ -249,7 +422,7 @@ namespace SexToyLink.Classes
             }
         }
 
-        public void UpdateVibrationWhilePlaying(Form_UI myForm)
+        public void UpdateVibrationWhilePlaying(Form_Main myForm)
         {// call SetStrength("value") where value is calculated based on settings.
             /*
             *      min              ........             max
@@ -320,7 +493,7 @@ namespace SexToyLink.Classes
             cycleSpan = new TimeSpan(0, 0, mySettings.Get_DOL_vib_cycle());
         }
 
-        public void LoadSettings(Form_UI myForm)
+        public void LoadSettings(Form_Main myForm)
         {
             try
             {
@@ -352,28 +525,116 @@ namespace SexToyLink.Classes
             }
         }
 
-        async Task UpdateVibration(Form_UI myForm)
+        async Task UpdateVibration(Form_Main myForm)
         {
             //devicesgenerictemp contains our devices. let's set them all up
             //to do: see how multiple devices are handled and basically vibrate em all to the vibrationCurrentIntensity / 100f value.
             //continue here.
             if (!client.Connected) { return; }
 
-            if (devicesVaginal.Count != 0)
-            {//to do: vibrate vaginal device(s)
+            if (devicesGenital.Count != 0)
+            {//vibrate vaginal & penis device(s)
                 haveAnyDevice = true;
+                foreach (var device in devicesGenital)
+                {
+                    //Console.WriteLine($"- {device.Name}");
+                    try
+                    {//let the vibration.... begin.
+                        if (genitalAction)
+                        {
+                            await device.VibrateAsync(vibrationCurrentIntensity / 100f); //This version sets all of the motors on a vibrating device to the same speed.
+                        }
+                        else
+                        {
+                            await device.VibrateAsync(0); //This version sets all of the motors on a vibrating device to the same speed.
+                        }
+                    }
+                    catch (ButtplugClientConnectorException e)
+                    {
+                        devicesAll.Remove(device);
+                        MessageBox.Show("Device \"" + device.Name + "\" is no longer connected, we'll stop trying to control it. To control it again, add it to Initiface Central again, then disconnect and reconnect ToyLink to Intiface Central.");
+                    }
+                }
 
             }
+
             if (devicesAnal.Count != 0)
-            {//to do: vibrate anal device(s)
+            {//vibrate anal device(s)
                 haveAnyDevice = true;
+                foreach (var device in devicesAnal)
+                {
+                    //Console.WriteLine($"- {device.Name}");
+                    try
+                    {//let the vibration.... begin.
+                        if (analAction)
+                        {
+                            await device.VibrateAsync(vibrationCurrentIntensity / 100f); //This version sets all of the motors on a vibrating device to the same speed.
+                        }
+                        else
+                        {
+                            await device.VibrateAsync(0); //This version sets all of the motors on a vibrating device to the same speed.
+                        }
+                    }
+                    catch (ButtplugClientConnectorException e)
+                    {
+                        devicesAll.Remove(device);
+                        MessageBox.Show("Device \"" + device.Name + "\" is no longer connected, we'll stop trying to control it. To control it again, add it to Initiface Central again, then disconnect and reconnect ToyLink to Intiface Central.");
+                    }
+                }
             }
             if (devicesOral.Count != 0)
-            {//to do: vibrate oral device(s)
+            {//vibrate oral device(s)
                 haveAnyDevice = true;
+                foreach (var device in devicesOral)
+                {
+                    //Console.WriteLine($"- {device.Name}");
+                    try
+                    {//let the vibration.... begin.
+                        if (oralAction)
+                        {
+                            await device.VibrateAsync(vibrationCurrentIntensity / 100f); //This version sets all of the motors on a vibrating device to the same speed.
+                        }
+                        else
+                        {
+                            await device.VibrateAsync(0); //This version sets all of the motors on a vibrating device to the same speed.
+                        }
+                    }
+                    catch (ButtplugClientConnectorException e)
+                    {
+                        devicesAll.Remove(device);
+                        MessageBox.Show("Device \"" + device.Name + "\" is no longer connected, we'll stop trying to control it. To control it again, add it to Initiface Central again, then disconnect and reconnect ToyLink to Intiface Central.");
+                    }
 
+                }
             }
-            if (devicesGenericTemp.Count != 0)
+            if (devicesBreasts.Count != 0)
+            {//vibrate oral device(s)
+                haveAnyDevice = true;
+                foreach (var device in devicesBreasts)
+                {
+                    //Console.WriteLine($"- {device.Name}");
+                    try
+                    {//let the vibration.... begin.
+                        if (breastAction)
+                        {
+                            await device.VibrateAsync(vibrationCurrentIntensity / 100f); //This version sets all of the motors on a vibrating device to the same speed.
+                        }
+                        else
+                        {
+                            await device.VibrateAsync(0); //This version sets all of the motors on a vibrating device to the same speed.
+                        }
+                    }
+                    catch (ButtplugClientConnectorException e)
+                    {
+                        devicesAll.Remove(device);
+                        MessageBox.Show("Device \"" + device.Name + "\" is no longer connected, we'll stop trying to control it. To control it again, add it to Initiface Central again, then disconnect and reconnect ToyLink to Intiface Central.");
+                    }
+
+                }
+            }
+
+
+            if (devicesAll.Count != 0 && 1==2)//disable vibrating all.
             {//temp vibrate all devices. later will split to vaginal/anal/oral.
                 haveAnyDevice = true;
 
@@ -386,7 +647,7 @@ namespace SexToyLink.Classes
                 }
                 */
 
-                foreach (var device in devicesGenericTemp)
+                foreach (var device in devicesAll)
                 {
                     //Console.WriteLine($"- {device.Name}");
                     try
@@ -395,12 +656,14 @@ namespace SexToyLink.Classes
                     }
                     catch (ButtplugClientConnectorException e)
                     {
-                        devicesGenericTemp.Remove(device);
+                        devicesAll.Remove(device);
                         MessageBox.Show("Device \"" + device.Name + "\" is no longer connected, we'll stop trying to control it. To control it again, add it to Initiface Central again, then disconnect and reconnect ToyLink to Intiface Central.");
                     }
 
                 }
             }
+
+
             if (!haveAnyDevice)
             {
                 elapsedTime.Stop();//stop the timer that decides how strong the next vibration should be                    
@@ -413,7 +676,7 @@ namespace SexToyLink.Classes
 
         }
 
-        async Task<bool> Connect_InitFace(Form_UI myForm)
+        async Task<bool> Connect_InitFace(Form_Main myForm)
         {
             if (!client.Connected)
             {
@@ -452,7 +715,78 @@ namespace SexToyLink.Classes
             return false; // Connection unsuccessful
         }
 
-        public async void button_Connect_Click(Form_UI myForm)
+        public void button_Devices_Details_Clicked(Form_Main myfForm)
+        {
+            if (client.Connected)
+            {
+                Form_Device_Details myForm = new Form_Device_Details(this);//classes are references so any changes will propagate back, no need to return it.
+                myForm.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("Please connect to Intiface Central first.");
+            }
+        }
+
+        public void CategorizeDevices()
+        {
+            devicesOral.Clear();
+            devicesAnal.Clear();
+            devicesGenital.Clear();
+            devicesBreasts.Clear();
+            devicesUncategorized.Clear();
+
+            bool found;
+            foreach (var connectedDevice in devicesAll)
+            {
+                found = false;
+                foreach (var memorizedDevice in mySettings.memorizedDevicesList)
+                {
+                    //if (connectedDevice.DisplayName == memorizedDevice.displayName)
+                    if (connectedDevice.Index.ToString() == memorizedDevice.displayName)//temporarily using index until displayname bug is resolved
+                    {
+                        switch (memorizedDevice.bodypart)
+                        {
+                            case "oral":
+                            {
+                                devicesOral.Add(connectedDevice);
+                                found = true;
+                                break;
+                            }
+                            case "anal":
+                            {
+                                devicesAnal.Add(connectedDevice);
+                                found = true;
+                                break;
+                            }
+                            case "genital":
+                            {
+                                devicesGenital.Add(connectedDevice);
+                                found = true;
+                                break;
+                            }
+                            case "breasts":
+                            {
+                                devicesBreasts.Add(connectedDevice);
+                                found = true;
+                                break;
+                            }
+                            default:
+                            {
+                                MessageBox.Show("Something is wrong. Device \"" + connectedDevice.DisplayName + "\" is memorized and has bodypart \"" + memorizedDevice.bodypart + "\" and failed to match the defined categories.");
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (found == false)
+                {
+                    devicesUncategorized.Add(connectedDevice);
+                }
+            }
+        }
+
+        public async void button_Connect_Click(Form_Main myForm)
         {
             haveAnyDevice = false;
             SetStatus(myForm, "Connecting...");
@@ -470,17 +804,18 @@ namespace SexToyLink.Classes
             if (isConnected == true)
             {
                 //quick and dirty set all connected devices to generic list. need to implement name based separation per user preference later
-                devicesGenericTemp = client.Devices.ToList();
-                if (devicesGenericTemp.Count > 0)
+                devicesAll = client.Devices.ToList();
+                if (devicesAll.Count > 0)
                 {
+                    CategorizeDevices();
                     haveAnyDevice = true;
                     controlActive = true;
                     SetStatus(myForm, "Connected");
                 }
                 else
                 {
+                    Disconnect(myForm);
                     MessageBox.Show("Connection succesful, but no devices detected. Please connect your devices to Intiface Central first. Disconnecting.");
-                    SetStatus(myForm, "Disconnected");
                 }
             }
             else
@@ -489,7 +824,7 @@ namespace SexToyLink.Classes
             }
         }
 
-        public void SetStatus(Form_UI myForm, string text)//live verion
+        public void SetStatus(Form_Main myForm, string text)//live verion
         {
             if (myForm.InvokeRequired)
             {
@@ -507,7 +842,7 @@ namespace SexToyLink.Classes
             }
         }
 
-        public void StartGame(Form_UI myWindow)
+        public void StartGame(Form_Main myWindow)
         {
             if (mySettings.Get_GameSource() == "online")
             {//online
@@ -564,7 +899,7 @@ namespace SexToyLink.Classes
             }
         }
 
-        public bool SaveSettings(Form_UI myWindow)
+        public bool SaveSettings(Form_Main myWindow)
         {
             //check if values are valid before comiting to anything
             int temp = 0, temp1=0;

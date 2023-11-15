@@ -121,17 +121,27 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\Controller.cs" />
+    <Compile Include="Classes\MemorizedDevice.cs" />
     <Compile Include="Classes\Settings.cs" />
-    <Compile Include="Form_UI.cs">
+    <Compile Include="Forms\Form_Device_Details.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form_UI.Designer.cs">
-      <DependentUpon>Form_UI.cs</DependentUpon>
+    <Compile Include="Forms\Form_Device_Details.Designer.cs">
+      <DependentUpon>Form_Device_Details.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Form_Main.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Form_Main.Designer.cs">
+      <DependentUpon>Form_Main.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Form_UI.resx">
-      <DependentUpon>Form_UI.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Form_Device_Details.resx">
+      <DependentUpon>Form_Device_Details.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Form_Main.resx">
+      <DependentUpon>Form_Main.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -161,12 +171,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="link.ico" />
-    <Content Include="Readme.txt">
+    <Content Include="Text files\Readme.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Resources\Basic_red_dot.png" />
-    <Content Include="Change Log.txt" />
-    <Content Include="To Do.txt" />
+    <Content Include="Text files\To Do.txt" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.8">

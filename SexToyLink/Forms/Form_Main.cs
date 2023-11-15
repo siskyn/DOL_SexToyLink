@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using CefSharp;
 using CefSharp.WinForms;
 using SexToyLink.Classes;
+using SexToyLink.Forms;
 using System.Diagnostics;
 using Buttplug.Core;
 using Buttplug.Client;
@@ -22,13 +23,14 @@ using CefSharp.DevTools.Page;
 using System.Security.Policy;
 using CefSharp.DevTools.Network;
 
+
 namespace SexToyLink
 {
-    public partial class Form_UI : Form
+    public partial class Form_Main : Form
     {
         public volatile Controller mycontroller;
 
-        public Form_UI()
+        public Form_Main()
         {
             InitializeComponent();
             mycontroller = new Controller();
@@ -113,6 +115,10 @@ namespace SexToyLink
             mycontroller.timer_UI_update_wait_Tick(this);
         }
 
+        private void button_Devices_Details_Click(object sender, EventArgs e)
+        {
+            mycontroller.button_Devices_Details_Clicked(this);
+        }
     }
 }
 

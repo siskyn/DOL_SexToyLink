@@ -16,7 +16,7 @@ namespace SexToyLink
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form_UI());
+            Application.Run(new Form_Main());
         }
     }
 }

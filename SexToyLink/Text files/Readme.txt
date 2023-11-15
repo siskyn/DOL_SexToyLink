@@ -1,22 +1,6 @@
-﻿ CONTENTS OF THIS FILE
----------------------
-
- * Introduction
- * Installation
- * Usage
- * FAQ
- * Changelog
- * Credits
-
-
- Introduction
+﻿What is this?
 ------------
-This app is designed to bridge the gap between physical sex toys, and software.
-Keep in mind, this is a very early alpha.
-
-Current functionality:
-1. Direct control of sex toy(s) through the app interface.
-2. Automatic control of sex toy(s) during sex scenes in Degrees of Lewdity
+You can play Degrees of Lewdity through this app, and the app will detect which body parts of your character are getting... stimulated, and turn on remote controlled toys assigned to that bodypart. 
 
 
  Installation
@@ -33,8 +17,9 @@ Current functionality:
    2.2 Set Port and Server address (if not sure, leave default, it will work with a default installation of Intiface Central on the same computer)
    2.3 Set the Min and Max Strength, as well as the Cycle duration as desired.
 3. Hit "Connect"
-4. Go to Play
-5. Click "Launch DoL"
+4. Go to Settings > Device Details and drag and drop which device should be activated for which body part.
+5. Go to Play
+6. Click "Launch DoL"
 
 
  FAQ
@@ -55,6 +40,9 @@ A: To resolve this please do the following:
     1. Check that it's supported (check above)
     2. Check if you can manually control it from Intiface Central
 
+Q: Can I assign a device to more than 1 body part?
+A: Yes
+
 Q: What is Degrees of Lewdity and where do I get it ?
 A: Degrees of Lewdity is an erotic game. You play an 18-year-old boy or girl in a town full of people with lewd intentions. 
 Go to school and find honest work, turn to a life of crime, or sell your body in more carnal ways. 
@@ -67,7 +55,16 @@ A: You can resize the window by draging on corners, or simply maximize it by dou
 
  Changelog
 ------------
+
+
+V1.1
+- Can now categorize which device should be trigered for oral, breast, anal and vaginal/penis stimulation.
+- Created a more detailed trigger system that detects which body part gets stimulated, and turns on the relevant devices.
+- Temporarilyidentifying devices by their index than Display Name due to a bug in the Buttplug API.
+
+
 V 1.0
+- updated CEf Sharp (embeded browser) to latest version.
 - Updated to use Intiface Central
 - Added ability to play from online location
 - Under the hood changes to allow easier updates in the future
