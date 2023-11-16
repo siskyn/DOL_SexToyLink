@@ -13,6 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Runtime.ConstrainedExecution;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
@@ -20,6 +21,8 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar;
 
 
 namespace SexToyLink.Classes
@@ -93,26 +96,28 @@ namespace SexToyLink.Classes
             oralTriggers.Add("continues to push your mouth against");
             oralTriggers.Add("pushes your mouth against");
             oralTriggers.Add("struggles to keep your mouth latched to");
-            oralTriggers.Add("breaths are quick and heavy, jostling your head against");            
-            //oralTriggers.Add("");
+            oralTriggers.Add("breaths are quick and heavy, jostling your head against");
+            oralTriggers.Add("against your lips");
+            
+
 
 
 
             breastTriggers.Add("kisses and caresses your");
             breastTriggers.Add("tongue against your");
             breastTriggers.Add("fingers lingering around your");
-            //breastTriggers.Add("");
+
             
                 
                 
 
 
 
-            genitalTriggers.Add("your labia with the \\b\\w +\\b in (?:\\s+\\S+){0,3}\\s+ hand");
-            genitalTriggers.Add("plunges (?:\\s+\\S+){0,3}\\s+ into your warm");
+            genitalTriggers.Add("your labia with the ");
+            genitalTriggers.Add(" into your warm");
             genitalTriggers.Add("your labia.");
             genitalTriggers.Add("gives your clitoris a tweak.");
-            genitalTriggers.Add("rubs the base of your << penisSimple >> while toying with your pussy");
+            genitalTriggers.Add("while toying with your pussy");
             genitalTriggers.Add("plunges a finger into your warm");
             genitalTriggers.Add("your shaft.");
             genitalTriggers.Add("rubs your glans.");
@@ -120,17 +125,34 @@ namespace SexToyLink.Classes
             genitalTriggers.Add("the inside of your");
             genitalTriggers.Add(" the length of your");
             genitalTriggers.Add("hand inside of your");
-            genitalTriggers.Add("the \\b\\w +\\b in \\b\\w +\\b \\b\\w +\\b hand against your");
-            genitalTriggers.Add("your \\b\\w +\\b with the \\b\\w +\\b in \\b\\w +\\b \\b\\w +\\b hand.");
             genitalTriggers.Add("hand onto your penis.");
             genitalTriggers.Add("teases your glans with the");
-            genitalTriggers.Add("With increasing power, \\b\\w +\\b fucks your");
+            genitalTriggers.Add("With increasing power,");
             genitalTriggers.Add("while toying with your pussy");
             genitalTriggers.Add("your labia with the");
             genitalTriggers.Add("your penis with the");
-            genitalTriggers.Add("against your \\b\\w +\\b penis");
+            genitalTriggers.Add("pulsing around your length");
+            genitalTriggers.Add(" thrust deep into the");
+            genitalTriggers.Add(" violates your tender penis");
+            genitalTriggers.Add("penis is hungrily devoured by");
+            genitalTriggers.Add("kneading and squeezing your length");
+            genitalTriggers.Add("penis with her pelvis as");
+            genitalTriggers.Add("penis with its ass");
+            genitalTriggers.Add("as you pound its ass");
+            genitalTriggers.Add("rubbing her ass against your tender penis");
+            genitalTriggers.Add("penis between her cheeks");
+            genitalTriggers.Add("penis into her pussy");
+            genitalTriggers.Add("penis into her ass");
+            genitalTriggers.Add("penis deeper into her ass");
+            genitalTriggers.Add("penis deeper into her pussy");
             
-            //genitalTriggers.Add("");
+                
+                
+                
+
+
+
+
 
 
 
@@ -138,18 +160,25 @@ namespace SexToyLink.Classes
 
             analTriggers.Add("teases your anus with your");
             analTriggers.Add("slaps your ass and");
-            analTriggers.Add("your anus.");
             analTriggers.Add("into your ass.");
             analTriggers.Add("in and out of your ass");
-            //analTriggers.Add("");
-
+            analTriggers.Add("with your slender ass");
+            analTriggers.Add("butt, giving no regard to your comfort");
+            analTriggers.Add("thrusting into your slender butt");
+            analTriggers.Add("thrusting into your slender ass");
+            analTriggers.Add("butt with increasing power");
+            analTriggers.Add("caresses your anus");
             
-                 
-                 
-                 
-                 
                 
-                 
+
+
+
+
+
+
+
+
+
         }
 
         public void UpdateDeviceCategories(List<string> oral, List<string> breast, List<string>genital, List<string> anal)
@@ -340,11 +369,8 @@ namespace SexToyLink.Classes
 
         async Task<bool> CheckTriggerSet(Form_Main myForm, List<string> myTriggers)
         {
-            //string script = $"var triggers = {Newtonsoft.Json.JsonConvert.SerializeObject(myTriggers)}; triggers.some(trigger => document.body.innerText.includes(trigger));";
+            string script = $"var triggers = {Newtonsoft.Json.JsonConvert.SerializeObject(myTriggers)}; triggers.some(trigger => document.body.innerText.includes(trigger));";
 
-
-            var jsRegexPatterns = myTriggers.Select(trigger => $"/{Regex.Escape(trigger)}/").ToList();
-            string script = $"var triggers = {Newtonsoft.Json.JsonConvert.SerializeObject(jsRegexPatterns)}; triggers.some(regex => regex.test(document.body.innerText));";
 
             var result = await myForm.chromiumWebBrowser1.EvaluateScriptAsync(script);
 

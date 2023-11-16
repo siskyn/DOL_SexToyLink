@@ -56,6 +56,9 @@ A: You can resize the window by draging on corners, or simply maximize it by dou
  Changelog
 ------------
 
+V1.2
+- Changed from regex triggers to simple triggers as regex doesn't work for the moment.
+- Added more triggers.
 
 V1.1
 - Can now categorize which device should be trigered for oral, breast, anal and vaginal/penis stimulation.
