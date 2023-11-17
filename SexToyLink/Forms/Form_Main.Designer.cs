@@ -35,6 +35,7 @@
             this.Open_DOL_button = new System.Windows.Forms.Button();
             this.chromiumWebBrowser1 = new CefSharp.WinForms.ChromiumWebBrowser();
             this.tabPage_settings = new System.Windows.Forms.TabPage();
+            this.button_Debug = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.button_Devices_Details = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
@@ -102,6 +103,7 @@
             // 
             // Open_DOL_button
             // 
+            this.Open_DOL_button.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Open_DOL_button.Font = new System.Drawing.Font("Monotype Corsiva", 36F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Open_DOL_button.Location = new System.Drawing.Point(3, 3);
             this.Open_DOL_button.Name = "Open_DOL_button";
@@ -123,6 +125,7 @@
             // 
             // tabPage_settings
             // 
+            this.tabPage_settings.Controls.Add(this.button_Debug);
             this.tabPage_settings.Controls.Add(this.panel2);
             this.tabPage_settings.Controls.Add(this.button_save_Settings);
             this.tabPage_settings.Controls.Add(this.panel1);
@@ -132,6 +135,17 @@
             this.tabPage_settings.TabIndex = 2;
             this.tabPage_settings.Text = "Settings";
             this.tabPage_settings.UseVisualStyleBackColor = true;
+            // 
+            // button_Debug
+            // 
+            this.button_Debug.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.button_Debug.Location = new System.Drawing.Point(570, 249);
+            this.button_Debug.Name = "button_Debug";
+            this.button_Debug.Size = new System.Drawing.Size(88, 31);
+            this.button_Debug.TabIndex = 10;
+            this.button_Debug.Text = "Toggle Debug";
+            this.button_Debug.UseVisualStyleBackColor = true;
+            this.button_Debug.Click += new System.EventHandler(this.button_Debug_Click);
             // 
             // panel2
             // 
@@ -258,7 +272,7 @@
             this.button_save_Settings.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.button_save_Settings.Location = new System.Drawing.Point(0, 249);
             this.button_save_Settings.Name = "button_save_Settings";
-            this.button_save_Settings.Size = new System.Drawing.Size(661, 31);
+            this.button_save_Settings.Size = new System.Drawing.Size(567, 31);
             this.button_save_Settings.TabIndex = 8;
             this.button_save_Settings.Text = "Save Settings";
             this.button_save_Settings.UseVisualStyleBackColor = true;
@@ -405,7 +419,7 @@
             // 
             // timer_DOL_check
             // 
-            this.timer_DOL_check.Interval = 200;
+            this.timer_DOL_check.Interval = 1000;
             this.timer_DOL_check.Tick += new System.EventHandler(this.timer_DOL_Tick);
             // 
             // timer_UI_update_wait
@@ -498,6 +512,7 @@
         private System.Windows.Forms.Button button_Connect;
         public System.Windows.Forms.Button button_game_reload;
         private System.Windows.Forms.Button button_Devices_Details;
+        private System.Windows.Forms.Button button_Debug;
     }
 }
 

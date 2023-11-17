@@ -29,6 +29,7 @@ namespace SexToyLink
     public partial class Form_Main : Form
     {
         public volatile Controller mycontroller;
+        
 
         public Form_Main()
         {
@@ -118,6 +119,11 @@ namespace SexToyLink
         private void button_Devices_Details_Click(object sender, EventArgs e)
         {
             mycontroller.button_Devices_Details_Clicked(this);
+        }
+
+        private void button_Debug_Click(object sender, EventArgs e)
+        {
+            mycontroller.toggleDebug();
         }
     }
 }

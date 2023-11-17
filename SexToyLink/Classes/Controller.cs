@@ -29,7 +29,8 @@ namespace SexToyLink.Classes
 {
     public class Controller
     {
-
+        Form_DebugConsole myConsole;
+        public bool debug = false;
         public volatile string UI_update_action = "", url = "";
         volatile bool CombatDetected = false;
         private TaskCompletionSource<bool> stopScanClickWaitTask;
@@ -77,6 +78,13 @@ namespace SexToyLink.Classes
                 LoadSettingsFromFile();                
             }
             catch{ }
+
+            //If built as a debug build, automatically open debug console.
+            #if DEBUG
+                toggleDebug(true);
+            #else
+                toggleDebug(false);
+            #endif
         }
 
         void LoadTriggers()
@@ -102,15 +110,11 @@ namespace SexToyLink.Classes
 
 
 
-
             breastTriggers.Add("kisses and caresses your");
             breastTriggers.Add("tongue against your");
             breastTriggers.Add("fingers lingering around your");
 
             
-                
-                
-
 
 
             genitalTriggers.Add("your labia with the ");
@@ -145,17 +149,11 @@ namespace SexToyLink.Classes
             genitalTriggers.Add("penis into her ass");
             genitalTriggers.Add("penis deeper into her ass");
             genitalTriggers.Add("penis deeper into her pussy");
+            genitalTriggers.Add("rhythmically pounding your length.");
+            genitalTriggers.Add("continues to violate your receptive twitching penis");
+            genitalTriggers.Add(" twitch around your length as");
             
-                
-                
-                
-
-
-
-
-
-
-
+             
 
 
             analTriggers.Add("teases your anus with your");
@@ -168,17 +166,49 @@ namespace SexToyLink.Classes
             analTriggers.Add("thrusting into your slender ass");
             analTriggers.Add("butt with increasing power");
             analTriggers.Add("caresses your anus");
-            
-                
+            analTriggers.Add("into your slender ass");
+            analTriggers.Add("into your slender bum");
+            analTriggers.Add("violate your slender ass");
+            analTriggers.Add("violate your slender bum");
+            analTriggers.Add("fucks your slender ass");
+            analTriggers.Add("fucks your slender bum");
+            analTriggers.Add("caresses your anus");
 
 
+        }
 
+        public void toggleDebug()
+        {
 
-
-
-
-
-
+            if (debug)
+            {
+                debug = false;
+                myConsole.closeConsole();
+            }
+            else
+            {
+                debug = true;
+                myConsole = new Form_DebugConsole(this);
+                myConsole.Show();
+            }
+        }
+        public void toggleDebug(bool newState)
+        {
+            if (!newState)
+            {
+                debug = false;
+                try
+                {
+                    myConsole.closeConsole();
+                }
+                catch (Exception e) { }
+            }
+            else
+            {
+                debug = true;
+                myConsole = new Form_DebugConsole(this);
+                myConsole.Show();
+            }
         }
 
         public void UpdateDeviceCategories(List<string> oral, List<string> breast, List<string>genital, List<string> anal)
@@ -292,8 +322,8 @@ namespace SexToyLink.Classes
 
         public void HandleDeviceRemoved(object aObj, DeviceRemovedEventArgs aArgs)
         {
-            MessageBox.Show("A device was removed while connected. This is not yet handled. Disconnecting to prevent issues. Please reconnect.");
-            client.DisconnectAsync();
+            MessageBox.Show("A device was removed while connected. This is not yet handled. To use it again, reconnect device to Intiface Central, then reconnect this app to Intiface Central.");
+            //client.DisconnectAsync();
         }
 
         async void CheckDOLState(Form_Main myForm)
@@ -341,18 +371,22 @@ namespace SexToyLink.Classes
                 if (await CheckTriggerSet(myForm, oralTriggers) == true)
                 {//we have oral action
                     oralAction = true;
+                    if (debug) consoleWriteLine("Found oral trigger.");
                 }
                 if (await CheckTriggerSet(myForm, breastTriggers) == true)
                 {//we have breast action
                     breastAction = true;
+                    if (debug) consoleWriteLine("Found breast trigger.");
                 }
                 if (await CheckTriggerSet(myForm, genitalTriggers) == true)
                 {//we have genital action
                     genitalAction = true;
+                    if (debug) consoleWriteLine("Found genital trigger.");
                 }
                 if (await CheckTriggerSet(myForm, analTriggers) == true)
                 {//we have anal action
                     analAction = true;
+                    if (debug) consoleWriteLine("Found anal trigger.");
                 }
 
                 if (oralAction || breastAction || genitalAction || analAction)
@@ -365,6 +399,11 @@ namespace SexToyLink.Classes
                 }
 
             }
+        }
+
+        void consoleWriteLine(string message)
+        {
+            myConsole.writeLine(TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.Local).ToString("yyyy-MM-dd HH:mm:ss.fff"), message);
         }
 
         async Task<bool> CheckTriggerSet(Form_Main myForm, List<string> myTriggers)
@@ -384,25 +423,32 @@ namespace SexToyLink.Classes
 
         public void Timer_DOL_Tick_Update(Form_Main myForm)
         {
+            //if (debug) consoleWriteLine("Timer_DOL_Tick_Update cycle started.");
             if (selectedTab == 0)
             {
+                if (debug) consoleWriteLine("Game tab active, checking for triggers.");
                 playingDOL = true;
                 if (haveAnyDevice) CheckDOLState(myForm);
             }
             else
             {
+                if (debug) consoleWriteLine("Game tab not active.");
                 if (playingDOL)
                 {
                     playingDOL = false;
                     elapsedTime.Stop();//stop the timer that decides how strong the next vibration should be                    
                     myForm.timer_DOL_vibrate.Stop();//stop the timer that updates vibration
+                    if (debug) consoleWriteLine("Switched out of game tab, stopping devices.");
                     SetStrength(myForm, 0);//stop vibration
+
                 }
             }
+            //if (debug) consoleWriteLine("Timer_DOL_Tick_Update cycle ended.");
         }
 
         void combat_Detected(Form_Main myForm)
         {
+            
             if (myForm.InvokeRequired)
             {
                 myForm.Invoke((MethodInvoker)delegate
@@ -412,12 +458,23 @@ namespace SexToyLink.Classes
             }
             else
             {
-                if (!myForm.timer_DOL_vibrate.Enabled) myForm.timer_DOL_vibrate.Start();
+                CombatDetected = true;
+                consoleWriteLine("combat detected, checking if vibrate timer is on");
+                if (!myForm.timer_DOL_vibrate.Enabled)
+                {
+                    consoleWriteLine("combat detected, vibrate timer was off, starting it");
+                    myForm.timer_DOL_vibrate.Start();
+                }
+                else
+                {
+                    consoleWriteLine("combat detected, vibrate timer was on. Let it be.");
+                }
             }
         }
 
         void combat_NOT_Detected(Form_Main myForm)
         {
+            
             if (myForm.InvokeRequired)
             {
                 myForm.Invoke((MethodInvoker)delegate
@@ -427,14 +484,20 @@ namespace SexToyLink.Classes
             }
             else
             {
-                elapsedTime.Stop();
-                myForm.timer_DOL_vibrate.Stop();
-                SetStrength(myForm, 0);
+                if (CombatDetected)
+                {
+                    CombatDetected = false;
+                    elapsedTime.Stop();
+                    myForm.timer_DOL_vibrate.Stop();
+                    consoleWriteLine("combat not detected, stopping vibration");
+                    SetStrength(myForm, 0);
+                }
             }
         }
 
         void SetStrength(Form_Main myForm,  float newValue)
         {
+            if (debug) consoleWriteLine("SetStrength(" + newValue.ToString() + ")");
             vibrationCurrentIntensity = newValue;
             UpdateVibration(myForm);
         }
@@ -460,14 +523,18 @@ namespace SexToyLink.Classes
             * 
             */
 
+            //if (debug) consoleWriteLine("Starting vibration update.");
+            //Thread.Sleep(200);
             if (elapsedTime.IsRunning == false)// this is the first moment of the sex scene, start at min.
             {
+                if (debug) consoleWriteLine("Starting Scene at min vibration");
                 SetStrength(myForm, mySettings.Get_DOL_vib_min());
                 elapsedTime.Start();
                 return;
             }
-
-            cycleSpan = new TimeSpan(0, 0, mySettings.Get_DOL_vib_cycle());
+            //divided by 2 because we ramp up for duration of cycleSpan, then ramp down for duration of cycleSpan, so in effect, we use twice the time for a complete cycle
+            cycleSpan = new TimeSpan(0,0, 0, 0, mySettings.Get_DOL_vib_cycle()/2); 
+            
             if (patternDirectionForward == true)
             {
                 totalElapsedTime += elapsedTime.Elapsed;
@@ -477,7 +544,7 @@ namespace SexToyLink.Classes
                 totalElapsedTimeReverse += elapsedTime.Elapsed;
             }
             totalElapsePercent = Convert.ToInt32((totalElapsedTime.TotalMilliseconds - totalElapsedTimeReverse.TotalMilliseconds) / cycleSpan.TotalMilliseconds * 100);
-
+            if (debug) consoleWriteLine("Pattern direction: " + patternDirectionForward + "   Time from last update: (ms): " + elapsedTime.Elapsed.TotalMilliseconds + "   Cycle progress (0-100): " + totalElapsePercent);
 
             if (totalElapsePercent >= 100)
             {
@@ -511,7 +578,9 @@ namespace SexToyLink.Classes
                     patternDirectionForward = true;
                 }
             }
+            elapsedTime.Reset();
             elapsedTime.Start();
+            //if (debug) consoleWriteLine("Vibration update complete");
         }
 
         void LoadCycleSpan()
@@ -553,9 +622,17 @@ namespace SexToyLink.Classes
 
         async Task UpdateVibration(Form_Main myForm)
         {
-            //devicesgenerictemp contains our devices. let's set them all up
-            //to do: see how multiple devices are handled and basically vibrate em all to the vibrationCurrentIntensity / 100f value.
-            //continue here.
+            /* QA with Intiface Devs:
+             * 
+             * Q: How fast are commands pushed out?
+             * A:Just assume 100ms or 10hz
+             * 
+             * Q: How does it handle receiving too many messages too fast?
+             * A: OS usually queues things up, meaning if you send WAY too fast the OS will just queue and it can sometimes be sending for like 20-30s after you stop sending commands. 
+             * Bluetooth LE also has guaranteed delivery so it'll send every. fucking. message.
+             */
+
+
             if (!client.Connected) { return; }
 
             if (devicesGenital.Count != 0)
@@ -563,21 +640,23 @@ namespace SexToyLink.Classes
                 haveAnyDevice = true;
                 foreach (var device in devicesGenital)
                 {
-                    //Console.WriteLine($"- {device.Name}");
                     try
                     {//let the vibration.... begin.
                         if (genitalAction)
                         {
+                            //if (debug) consoleWriteLine("UpdateVibration>Genital>Vibrate(" + vibrationCurrentIntensity / 100f + ")");
                             await device.VibrateAsync(vibrationCurrentIntensity / 100f); //This version sets all of the motors on a vibrating device to the same speed.
                         }
                         else
                         {
+                            //if (debug) consoleWriteLine("UpdateVibration>Genital>Vibrate(0)");
                             await device.VibrateAsync(0); //This version sets all of the motors on a vibrating device to the same speed.
                         }
                     }
                     catch (ButtplugClientConnectorException e)
                     {
-                        devicesAll.Remove(device);
+                        
+                        removeConnectedDevice(device);
                         MessageBox.Show("Device \"" + device.Name + "\" is no longer connected, we'll stop trying to control it. To control it again, add it to Initiface Central again, then disconnect and reconnect ToyLink to Intiface Central.");
                     }
                 }
@@ -594,10 +673,12 @@ namespace SexToyLink.Classes
                     {//let the vibration.... begin.
                         if (analAction)
                         {
+                            //if (debug) consoleWriteLine("UpdateVibration>Anal>Vibrate(" + vibrationCurrentIntensity / 100f + ")");
                             await device.VibrateAsync(vibrationCurrentIntensity / 100f); //This version sets all of the motors on a vibrating device to the same speed.
                         }
                         else
                         {
+                            //if (debug) consoleWriteLine("UpdateVibration>Anal>Vibrate(0)");
                             await device.VibrateAsync(0); //This version sets all of the motors on a vibrating device to the same speed.
                         }
                     }
@@ -618,10 +699,12 @@ namespace SexToyLink.Classes
                     {//let the vibration.... begin.
                         if (oralAction)
                         {
+                            //if (debug) consoleWriteLine("UpdateVibration>Oral>Vibrate(" + vibrationCurrentIntensity / 100f + ")");
                             await device.VibrateAsync(vibrationCurrentIntensity / 100f); //This version sets all of the motors on a vibrating device to the same speed.
                         }
                         else
                         {
+                            //if (debug) consoleWriteLine("UpdateVibration>Genital>Vibrate(0)");
                             await device.VibrateAsync(0); //This version sets all of the motors on a vibrating device to the same speed.
                         }
                     }
@@ -702,6 +785,14 @@ namespace SexToyLink.Classes
 
         }
 
+        void removeConnectedDevice(ButtplugClientDevice myDevice)
+        {
+            devicesAll.Remove(myDevice);
+            devicesOral.Remove(myDevice);
+            devicesBreasts.Remove(myDevice);
+            devicesAnal.Remove(myDevice);
+            devicesGenital.Remove(myDevice);
+        }
         async Task<bool> Connect_InitFace(Form_Main myForm)
         {
             if (!client.Connected)
@@ -825,10 +916,11 @@ namespace SexToyLink.Classes
                 MessageBox.Show("IP or Port not valid.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-
+            if (debug) consoleWriteLine("Connecting to " + mySettings.Get_IP() + ":" + mySettings.Get_Port());
             bool isConnected = await Connect_InitFace(myForm);
             if (isConnected == true)
             {
+                if (debug) consoleWriteLine("Connection established.");
                 //quick and dirty set all connected devices to generic list. need to implement name based separation per user preference later
                 devicesAll = client.Devices.ToList();
                 if (devicesAll.Count > 0)
@@ -870,6 +962,7 @@ namespace SexToyLink.Classes
 
         public void StartGame(Form_Main myWindow)
         {
+            myWindow.WindowState = FormWindowState.Maximized;
             if (mySettings.Get_GameSource() == "online")
             {//online
                 if (mySettings.Get_DOL_path_online() == "")

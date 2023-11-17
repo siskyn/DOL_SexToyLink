@@ -123,6 +123,12 @@
     <Compile Include="Classes\Controller.cs" />
     <Compile Include="Classes\MemorizedDevice.cs" />
     <Compile Include="Classes\Settings.cs" />
+    <Compile Include="Forms\Form_DebugConsole.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Form_DebugConsole.Designer.cs">
+      <DependentUpon>Form_DebugConsole.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Form_Device_Details.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -137,6 +143,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Forms\Form_DebugConsole.resx">
+      <DependentUpon>Form_DebugConsole.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Form_Device_Details.resx">
       <DependentUpon>Form_Device_Details.cs</DependentUpon>
     </EmbeddedResource>
@@ -171,11 +180,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="link.ico" />
-    <Content Include="Text files\Readme.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Content Include="Readme.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="Resources\Basic_red_dot.png" />
-    <Content Include="Text files\To Do.txt" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.8">
@@ -188,6 +195,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

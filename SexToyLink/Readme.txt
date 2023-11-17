@@ -55,6 +55,11 @@ A: You can resize the window by draging on corners, or simply maximize it by dou
 
  Changelog
 ------------
+V1.3
+- Added more triggers
+- Added a debug console (Settings > Toggle Debug)
+- Fixed vibration intensity to maintain the correct rithm
+- Starting the game will automatically maximize the window.
 
 V1.2
 - Changed from regex triggers to simple triggers as regex doesn't work for the moment.
