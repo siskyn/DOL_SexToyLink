@@ -543,7 +543,7 @@ namespace SexToyLink.Classes
                     CombatDetected = false;
                     elapsedTime.Stop();
                     myForm.timer_DOL_vibrate.Stop();
-                    consoleWriteLine("combat not detected, stopping vibration");
+                    if(debug) consoleWriteLine("combat not detected, stopping vibration");
                     SetStrength(myForm, 0);
                 }
             }
