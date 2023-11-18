@@ -24,7 +24,7 @@ namespace SexToyLink.Classes
         {
             DOL_vibration_min = 0;
             DOL_vibration_max = 100;
-            DOL_vibration_cycle = 200;
+            DOL_vibration_cycle = 800;
             gameSource = "online";
             DOL_path_online = "https://dolmods.net/";
             DOL_path_offline = "";

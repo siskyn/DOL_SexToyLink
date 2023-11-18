@@ -122,6 +122,7 @@
             this.chromiumWebBrowser1.Size = new System.Drawing.Size(655, 274);
             this.chromiumWebBrowser1.TabIndex = 3;
             this.chromiumWebBrowser1.FrameLoadEnd += new System.EventHandler<CefSharp.FrameLoadEndEventArgs>(this.chromiumWebBrowser1_FrameLoadEnd);
+            this.chromiumWebBrowser1.ConsoleMessage += new System.EventHandler<CefSharp.ConsoleMessageEventArgs>(this.chromiumWebBrowser1_ConsoleMessage);
             // 
             // tabPage_settings
             // 

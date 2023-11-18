@@ -125,6 +125,11 @@ namespace SexToyLink
         {
             mycontroller.toggleDebug();
         }
+
+        private void chromiumWebBrowser1_ConsoleMessage(object sender, ConsoleMessageEventArgs e)
+        {
+            mycontroller.receivedBrowserConsoleMessage(e.Message);
+        }
     }
 }
 

@@ -57,9 +57,9 @@ namespace SexToyLink.Classes
         public volatile bool haveAnyDevice = false;
         bool oralAction, breastAction, genitalAction, analAction;
         List<string> oralTriggers, breastTriggers, genitalTriggers, analTriggers;
-
-        public  Settings mySettings = new Settings();
-        string settingsPath = Application.StartupPath +"\\settings";
+        List<ButtplugClientDevice> updatedDevices = new List<ButtplugClientDevice>();
+        public Settings mySettings = new Settings();
+        string settingsPath = Application.StartupPath + "\\settings";
 
 
         public Controller()
@@ -75,16 +75,16 @@ namespace SexToyLink.Classes
             LoadTriggers();
             try
             {
-                LoadSettingsFromFile();                
+                LoadSettingsFromFile();
             }
-            catch{ }
+            catch { }
 
             //If built as a debug build, automatically open debug console.
-            #if DEBUG
-                toggleDebug(true);
-            #else
+#if DEBUG
+            toggleDebug(true);
+#else
                 toggleDebug(false);
-            #endif
+#endif
         }
 
         void LoadTriggers()
@@ -94,86 +94,78 @@ namespace SexToyLink.Classes
             genitalTriggers = new List<string>();
             analTriggers = new List<string>();
 
-            //regex patterns can be used
-            //   (?:\s+\S+){0,3}\s+  -> match up to 3 words
-            //   \b\w +\b            -> match 1 word
+            //regex patterns:
+            //match up to 3 words               \w+(\s+\w+){0,2}
 
+            string ass = @"\b(?:ass|bum|butt|anus)\b";
+            string optionalAdjective = @"(?:\w+\s+)?";//will also match whitespace after
+            string optionalDeeper = @"(?:deeper\s+)?";//will also match whitespace after
+            string penis = @"\b(?:penis|shaft|glans)\b";
+            string pussy = @"\b(?:pussy|pussy)\b";
+            string her = @"\b(?:his|her)\b";
+            string attackerBodypart = @"\b(?:ass|bum|butt|anus|pussy)\b";
 
-            oralTriggers.Add("down your throat");
-            oralTriggers.Add("presses your lips together in a kiss");
-            oralTriggers.Add("continues to push your mouth against");
-            oralTriggers.Add("pushes your mouth against");
-            oralTriggers.Add("struggles to keep your mouth latched to");
-            oralTriggers.Add("breaths are quick and heavy, jostling your head against");
-            oralTriggers.Add("against your lips");
+            oralTriggers.Add(@" / down your throat/");
+            oralTriggers.Add(@"/presses your lips together in a kiss/");
+            oralTriggers.Add(@"/continues to push your mouth against/");
+            oralTriggers.Add(@"/pushes your mouth against/");
+            oralTriggers.Add(@"/struggles to keep your mouth latched to/");
+            oralTriggers.Add(@"/breaths are quick and heavy, jostling your head against/");
+            oralTriggers.Add(@"/against your lips/");
+            oralTriggers.Add(@"/mouth with "+her+@" tongue/");
+            oralTriggers.Add(@"/between your lips/");
+            oralTriggers.Add(@"/explores your mouth/");
             
 
 
 
-            breastTriggers.Add("kisses and caresses your");
-            breastTriggers.Add("tongue against your");
-            breastTriggers.Add("fingers lingering around your");
+
+            breastTriggers.Add(@"/kisses and caresses your/");
+            breastTriggers.Add(@"/tongue against your/");
+            breastTriggers.Add(@"/fingers lingering around your/");
+
+
+
+
+            genitalTriggers.Add(@"/your labia with the/");//exact
+            genitalTriggers.Add(@"/gives your clitoris a tweak./");//exact
+            genitalTriggers.Add(@"/while toying with your "+pussy+@"/");
+            genitalTriggers.Add(@"/rubs your "+penis+@"./");
+            genitalTriggers.Add(@"/fingers around your "+penis+@"./");
+            genitalTriggers.Add(@"/the length of your/");
+            genitalTriggers.Add(@"/hand onto your "+penis+@"./");
+            genitalTriggers.Add(@"/teases your "+penis+@" with the/");
+            genitalTriggers.Add(@"/while toying with your "+pussy+@"/");
+            genitalTriggers.Add(@"/your labia with the/");
+            genitalTriggers.Add(@"/your "+penis+@" with the/");
+            genitalTriggers.Add(@"/pulsing around your length/");
+            genitalTriggers.Add(@"/violates your "+optionalAdjective+penis+@"/");
+            genitalTriggers.Add(@"/"+penis+@" is hungrily devoured by/");//exact
+            genitalTriggers.Add(@"/kneading and squeezing your length/");
+            genitalTriggers.Add(@"/"+penis+@" with "+her+@" pelvis as/");//penis with [her] pelvis as
+            genitalTriggers.Add(@"/"+penis+ @" with "+her+" "+attackerBodypart+@"/");
+            genitalTriggers.Add(@"/as you pound "+her+@" ass/"); //as you pound [her] ass
+            genitalTriggers.Add(@"/rubbing "+her+attackerBodypart+@" against your "+optionalAdjective+@"penis/");
+            genitalTriggers.Add(@"/"+penis+@" between "+her+@" cheeks/");
+            genitalTriggers.Add(@"/"+penis+@" "+optionalDeeper+"into "+her+" "+attackerBodypart+@"/");
+            genitalTriggers.Add(@"/rhythmically pounding your length./");
+            genitalTriggers.Add(@"/continues to violate your " + optionalAdjective+optionalAdjective+penis+"/");
+            genitalTriggers.Add(@"/twitch around your length as/");
+
 
             
 
-
-            genitalTriggers.Add("your labia with the ");
-            genitalTriggers.Add(" into your warm");
-            genitalTriggers.Add("your labia.");
-            genitalTriggers.Add("gives your clitoris a tweak.");
-            genitalTriggers.Add("while toying with your pussy");
-            genitalTriggers.Add("plunges a finger into your warm");
-            genitalTriggers.Add("your shaft.");
-            genitalTriggers.Add("rubs your glans.");
-            genitalTriggers.Add("fingers around your penis.");
-            genitalTriggers.Add("the inside of your");
-            genitalTriggers.Add(" the length of your");
-            genitalTriggers.Add("hand inside of your");
-            genitalTriggers.Add("hand onto your penis.");
-            genitalTriggers.Add("teases your glans with the");
-            genitalTriggers.Add("With increasing power,");
-            genitalTriggers.Add("while toying with your pussy");
-            genitalTriggers.Add("your labia with the");
-            genitalTriggers.Add("your penis with the");
-            genitalTriggers.Add("pulsing around your length");
-            genitalTriggers.Add(" thrust deep into the");
-            genitalTriggers.Add(" violates your tender penis");
-            genitalTriggers.Add("penis is hungrily devoured by");
-            genitalTriggers.Add("kneading and squeezing your length");
-            genitalTriggers.Add("penis with her pelvis as");
-            genitalTriggers.Add("penis with its ass");
-            genitalTriggers.Add("as you pound its ass");
-            genitalTriggers.Add("rubbing her ass against your tender penis");
-            genitalTriggers.Add("penis between her cheeks");
-            genitalTriggers.Add("penis into her pussy");
-            genitalTriggers.Add("penis into her ass");
-            genitalTriggers.Add("penis deeper into her ass");
-            genitalTriggers.Add("penis deeper into her pussy");
-            genitalTriggers.Add("rhythmically pounding your length.");
-            genitalTriggers.Add("continues to violate your receptive twitching penis");
-            genitalTriggers.Add(" twitch around your length as");
+            analTriggers.Add(@"/teases your "+optionalAdjective+ass+@" with/");
+            analTriggers.Add(@"/slaps your "+optionalAdjective+ass+@" and/");      
+            analTriggers.Add(@"/in and out of your "+optionalAdjective+ass+@"/");            
+            analTriggers.Add(@"/"+ass+@", giving no regard to your comfort/");            
+            analTriggers.Add(@"/thrusting into your "+optionalAdjective+ass+@"/");
+            analTriggers.Add(@"/"+ass+@" with increasing power/");
+            analTriggers.Add(@"/caresses your  "+optionalAdjective+ass+@"/");
+            analTriggers.Add(@"/into your  "+optionalAdjective+ass+@"/");
+            analTriggers.Add(@"/violate your "+optionalAdjective+ass+@"/");
+            analTriggers.Add(@"/fucks your "+optionalAdjective+ass+@"/");
             
-             
-
-
-            analTriggers.Add("teases your anus with your");
-            analTriggers.Add("slaps your ass and");
-            analTriggers.Add("into your ass.");
-            analTriggers.Add("in and out of your ass");
-            analTriggers.Add("with your slender ass");
-            analTriggers.Add("butt, giving no regard to your comfort");
-            analTriggers.Add("thrusting into your slender butt");
-            analTriggers.Add("thrusting into your slender ass");
-            analTriggers.Add("butt with increasing power");
-            analTriggers.Add("caresses your anus");
-            analTriggers.Add("into your slender ass");
-            analTriggers.Add("into your slender bum");
-            analTriggers.Add("violate your slender ass");
-            analTriggers.Add("violate your slender bum");
-            analTriggers.Add("fucks your slender ass");
-            analTriggers.Add("fucks your slender bum");
-            analTriggers.Add("caresses your anus");
-
 
         }
 
@@ -211,7 +203,7 @@ namespace SexToyLink.Classes
             }
         }
 
-        public void UpdateDeviceCategories(List<string> oral, List<string> breast, List<string>genital, List<string> anal)
+        public void UpdateDeviceCategories(List<string> oral, List<string> breast, List<string> genital, List<string> anal)
         {
             mySettings.memorizedDevicesList.Clear();
             devicesOral.Clear();
@@ -305,7 +297,7 @@ namespace SexToyLink.Classes
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-               myForm.textBox_Filepath.Text = openFileDialog.FileName;
+                myForm.textBox_Filepath.Text = openFileDialog.FileName;
             }
         }
 
@@ -317,7 +309,7 @@ namespace SexToyLink.Classes
          //devicesAnal
          //devicesOral
 
-         //Oooorrrrr be super lazy and require the player to have the toys already connected to Intiface before connecting the app to Intiface, and we can implement this later.
+            //Oooorrrrr be super lazy and require the player to have the toys already connected to Intiface before connecting the app to Intiface, and we can implement this later.
         }
 
         public void HandleDeviceRemoved(object aObj, DeviceRemovedEventArgs aArgs)
@@ -371,30 +363,32 @@ namespace SexToyLink.Classes
                 if (await CheckTriggerSet(myForm, oralTriggers) == true)
                 {//we have oral action
                     oralAction = true;
-                    if (debug) consoleWriteLine("Found oral trigger.");
+                    //if (debug) consoleWriteLine("Found oral trigger.");
                 }
                 if (await CheckTriggerSet(myForm, breastTriggers) == true)
                 {//we have breast action
                     breastAction = true;
-                    if (debug) consoleWriteLine("Found breast trigger.");
+                    //if (debug) consoleWriteLine("Found breast trigger.");
                 }
                 if (await CheckTriggerSet(myForm, genitalTriggers) == true)
                 {//we have genital action
                     genitalAction = true;
-                    if (debug) consoleWriteLine("Found genital trigger.");
+                    //if (debug) consoleWriteLine("Found genital trigger.");
                 }
                 if (await CheckTriggerSet(myForm, analTriggers) == true)
                 {//we have anal action
                     analAction = true;
-                    if (debug) consoleWriteLine("Found anal trigger.");
+                    //if (debug) consoleWriteLine("Found anal trigger.");
                 }
 
                 if (oralAction || breastAction || genitalAction || analAction)
                 {
+                    //if (debug) consoleWriteLine("combat detected");
                     combat_Detected(myForm);
                 }
                 else
                 {
+                   //if (debug) consoleWriteLine("combat not detected");
                     combat_NOT_Detected(myForm);
                 }
 
@@ -406,33 +400,93 @@ namespace SexToyLink.Classes
             myConsole.writeLine(TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.Local).ToString("yyyy-MM-dd HH:mm:ss.fff"), message);
         }
 
+        string GetJavaScriptArray(List<string> patterns)
+        {
+            string result = "[" + string.Join(",", patterns.Select(p => p)) + "]";
+            return result;
+        }
         async Task<bool> CheckTriggerSet(Form_Main myForm, List<string> myTriggers)
         {
-            string script = $"var triggers = {Newtonsoft.Json.JsonConvert.SerializeObject(myTriggers)}; triggers.some(trigger => document.body.innerText.includes(trigger));";
+
+            //string script = $"var triggers = {Newtonsoft.Json.JsonConvert.SerializeObject(myTriggers)}; triggers.some(trigger => document.body.innerText.includes(trigger));";
+
+            List<string> patterns = new List<string>
+            {
+                @"/Many \w+ you/",
+                @"/word1 \w+ \w+ word3/"
+            };
+            string script = @"
+                try
+                {
+                    let text = 'Many of you'; 
+                    let patterns = " + GetJavaScriptArray(myTriggers) + @";
+                    let patternsv2 = [/Many \w+ you/, /word1 \w+ \w+ word3/];
+                    //console.log(""patterns: type is "", console.log(typeof patterns), "" and content is: "", patterns);
+                    //console.log(""patternsv2: type is "", console.log(typeof patternsv2), "" and content is: "", patternsv2);
+                    let found = patterns.find(pattern => new RegExp(pattern).test(document.body.innerText));
+                    if(found)
+                    {
+                        console.log(""Found trigger:"", found.toString());
+                    }
+                    found ? 'found' : 'not found';
+                    //'found'
+
+                }
+                catch(error)
+                {
+                    error.message
+                }
+            ";
+             
+
 
 
             var result = await myForm.chromiumWebBrowser1.EvaluateScriptAsync(script);
-
-
-            if (result.Success && result.Result is bool triggerFound && triggerFound)
-            {//trigger found
+            //if (debug) consoleWriteLine("script result: " + result.Result.ToString());
+            if (result.Success && result.Result is string)
+            {//got a result
+                if (result.Result.ToString() == "found")
+                {//got a trigger
+                    //if (debug) consoleWriteLine("trigger found");
                     return true;
-            };
+                }
+                else
+                {
+                    if (result.Result.ToString() == "not found")
+                    {//ran succesfully but no match
+                        //if (debug) consoleWriteLine("trigger not found");
+                        return false;
+                    }
+                    else
+                    {//unexpected result so it's an error
+                        if (debug) consoleWriteLine("Javascript error or unexpected reply. Error message: " + result.Message + " and  reply message: " + result.Result);
+                    }
+                }
+            }
+            else
+            {
+                if (debug) consoleWriteLine("Javascript error or unexpected reply. Error message: " + result.Message + " and  reply message: " + result.Result);
+            }
+
             return false;
         }
 
+        public void receivedBrowserConsoleMessage(string message)
+        {
+            if (debug) consoleWriteLine("Browser console: " + message);
+        }
         public void Timer_DOL_Tick_Update(Form_Main myForm)
         {
             //if (debug) consoleWriteLine("Timer_DOL_Tick_Update cycle started.");
             if (selectedTab == 0)
             {
-                if (debug) consoleWriteLine("Game tab active, checking for triggers.");
+                //if (debug) consoleWriteLine("Game tab active, checking for triggers.");
                 playingDOL = true;
                 if (haveAnyDevice) CheckDOLState(myForm);
             }
             else
             {
-                if (debug) consoleWriteLine("Game tab not active.");
+                //if (debug) consoleWriteLine("Game tab not active.");
                 if (playingDOL)
                 {
                     playingDOL = false;
@@ -459,15 +513,15 @@ namespace SexToyLink.Classes
             else
             {
                 CombatDetected = true;
-                consoleWriteLine("combat detected, checking if vibrate timer is on");
+                //if(debug) consoleWriteLine("combat detected, checking if vibrate timer is on");
                 if (!myForm.timer_DOL_vibrate.Enabled)
                 {
-                    consoleWriteLine("combat detected, vibrate timer was off, starting it");
+                    //if(debug) consoleWriteLine("combat detected, vibrate timer was off, starting it");
                     myForm.timer_DOL_vibrate.Start();
                 }
                 else
                 {
-                    consoleWriteLine("combat detected, vibrate timer was on. Let it be.");
+                    //if(debug) consoleWriteLine("combat detected, vibrate timer was on. Let it be.");
                 }
             }
         }
@@ -497,7 +551,7 @@ namespace SexToyLink.Classes
 
         void SetStrength(Form_Main myForm,  float newValue)
         {
-            if (debug) consoleWriteLine("SetStrength(" + newValue.ToString() + ")");
+            //if (debug) consoleWriteLine("SetStrength(" + newValue.ToString() + ")");
             vibrationCurrentIntensity = newValue;
             UpdateVibration(myForm);
         }
@@ -524,7 +578,6 @@ namespace SexToyLink.Classes
             */
 
             //if (debug) consoleWriteLine("Starting vibration update.");
-            //Thread.Sleep(200);
             if (elapsedTime.IsRunning == false)// this is the first moment of the sex scene, start at min.
             {
                 if (debug) consoleWriteLine("Starting Scene at min vibration");
@@ -544,7 +597,7 @@ namespace SexToyLink.Classes
                 totalElapsedTimeReverse += elapsedTime.Elapsed;
             }
             totalElapsePercent = Convert.ToInt32((totalElapsedTime.TotalMilliseconds - totalElapsedTimeReverse.TotalMilliseconds) / cycleSpan.TotalMilliseconds * 100);
-            if (debug) consoleWriteLine("Pattern direction: " + patternDirectionForward + "   Time from last update: (ms): " + elapsedTime.Elapsed.TotalMilliseconds + "   Cycle progress (0-100): " + totalElapsePercent);
+            //if (debug) consoleWriteLine("Pattern direction: " + patternDirectionForward + "   Time from last update: (ms): " + elapsedTime.Elapsed.TotalMilliseconds + "   Cycle progress (0-100): " + totalElapsePercent);
 
             if (totalElapsePercent >= 100)
             {
@@ -635,16 +688,23 @@ namespace SexToyLink.Classes
 
             if (!client.Connected) { return; }
 
+            updatedDevices.Clear();
+
             if (devicesGenital.Count != 0)
             {//vibrate vaginal & penis device(s)
                 haveAnyDevice = true;
                 foreach (var device in devicesGenital)
                 {
+                    if (updatedDevices.Contains(device))
+                    {//we already sent vibration on this cycle from another bodypart category. skip.
+                        break;
+                    }
                     try
                     {//let the vibration.... begin.
                         if (genitalAction)
                         {
                             //if (debug) consoleWriteLine("UpdateVibration>Genital>Vibrate(" + vibrationCurrentIntensity / 100f + ")");
+                            updatedDevices.Add(device);
                             await device.VibrateAsync(vibrationCurrentIntensity / 100f); //This version sets all of the motors on a vibrating device to the same speed.
                         }
                         else
@@ -668,12 +728,17 @@ namespace SexToyLink.Classes
                 haveAnyDevice = true;
                 foreach (var device in devicesAnal)
                 {
+                    if (updatedDevices.Contains(device))
+                    {//we already sent vibration on this cycle from another bodypart category. skip.
+                        break;
+                    }
                     //Console.WriteLine($"- {device.Name}");
                     try
                     {//let the vibration.... begin.
                         if (analAction)
                         {
                             //if (debug) consoleWriteLine("UpdateVibration>Anal>Vibrate(" + vibrationCurrentIntensity / 100f + ")");
+                            updatedDevices.Add(device);
                             await device.VibrateAsync(vibrationCurrentIntensity / 100f); //This version sets all of the motors on a vibrating device to the same speed.
                         }
                         else
@@ -694,12 +759,17 @@ namespace SexToyLink.Classes
                 haveAnyDevice = true;
                 foreach (var device in devicesOral)
                 {
+                    if (updatedDevices.Contains(device))
+                    {//we already sent vibration on this cycle from another bodypart category. skip.
+                        break;
+                    }
                     //Console.WriteLine($"- {device.Name}");
                     try
                     {//let the vibration.... begin.
                         if (oralAction)
                         {
                             //if (debug) consoleWriteLine("UpdateVibration>Oral>Vibrate(" + vibrationCurrentIntensity / 100f + ")");
+                            updatedDevices.Add(device);
                             await device.VibrateAsync(vibrationCurrentIntensity / 100f); //This version sets all of the motors on a vibrating device to the same speed.
                         }
                         else
@@ -721,11 +791,16 @@ namespace SexToyLink.Classes
                 haveAnyDevice = true;
                 foreach (var device in devicesBreasts)
                 {
+                    if (updatedDevices.Contains(device))
+                    {//we already sent vibration on this cycle from another bodypart category. skip.
+                        break;
+                    }
                     //Console.WriteLine($"- {device.Name}");
                     try
                     {//let the vibration.... begin.
                         if (breastAction)
                         {
+                            updatedDevices.Add(device);
                             await device.VibrateAsync(vibrationCurrentIntensity / 100f); //This version sets all of the motors on a vibrating device to the same speed.
                         }
                         else
@@ -758,6 +833,10 @@ namespace SexToyLink.Classes
 
                 foreach (var device in devicesAll)
                 {
+                    if (updatedDevices.Contains(device))
+                    {//we already sent vibration on this cycle from another bodypart category. skip.
+                        break;
+                    }
                     //Console.WriteLine($"- {device.Name}");
                     try
                     {//let the vibration.... begin.
@@ -768,7 +847,6 @@ namespace SexToyLink.Classes
                         devicesAll.Remove(device);
                         MessageBox.Show("Device \"" + device.Name + "\" is no longer connected, we'll stop trying to control it. To control it again, add it to Initiface Central again, then disconnect and reconnect ToyLink to Intiface Central.");
                     }
-
                 }
             }
 
@@ -907,15 +985,15 @@ namespace SexToyLink.Classes
         {
             haveAnyDevice = false;
             SetStatus(myForm, "Connecting...");
-            try
-            {
+            //try
+            //{
                 myConnector = new ButtplugWebsocketConnector(new Uri("ws://" + mySettings.Get_IP() + ":" + mySettings.Get_Port()));
-            }
-            catch
-            {
-                MessageBox.Show("IP or Port not valid.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
+            //}
+            //catch
+            //{
+               // MessageBox.Show("IP or Port not valid.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+               // return;
+            //}
             if (debug) consoleWriteLine("Connecting to " + mySettings.Get_IP() + ":" + mySettings.Get_Port());
             bool isConnected = await Connect_InitFace(myForm);
             if (isConnected == true)

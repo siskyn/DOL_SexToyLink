@@ -13,13 +13,13 @@ You can play Degrees of Lewdity through this app, and the app will detect which 
 1. Run SexToyLink.exe and Intiface Central 
 2. Run Intiface server and add your devices to it. The super quick guide is, run the app, click the play button, go to Devices, click "Start Scanning" and turn on your devices. "For a more detailed guide see https://docs.intiface.com/docs/intiface-central/quickstart
 2. Go to Settings
-   2.1 Set the desired game source. either a downloaded copy of the game, or a web server (default is dolmods.net)
-   2.2 Set Port and Server address (if not sure, leave default, it will work with a default installation of Intiface Central on the same computer)
-   2.3 Set the Min and Max Strength, as well as the Cycle duration as desired.
-3. Hit "Connect"
-4. Go to Settings > Device Details and drag and drop which device should be activated for which body part.
-5. Go to Play
-6. Click "Launch DoL"
+3. Set the desired game source. either a downloaded copy of the game, or a web server (default is dolmods.net)
+4. Set Port and Server address (if not sure, leave default, it will work with a default installation of Intiface Central on the same computer)
+5. Set the Min and Max Strength, as well as the Cycle duration as desired.
+6. Hit "Connect"
+7. Go to Settings > Device Details and drag and drop which device should be activated for which body part.
+8. Go to Play
+9. Click "Launch DoL"
 
 
  FAQ
@@ -55,6 +55,10 @@ A: You can resize the window by draging on corners, or simply maximize it by dou
 
  Changelog
 ------------
+V1.4
+- Fixed a bug where if a device was trigered by multiple categories at the same time, it would vibrate very lightly regardless of the settings.
+- Re-added regex based triggers for more flexibility.
+
 V1.3
 - Added more triggers
 - Added a debug console (Settings > Toggle Debug)
